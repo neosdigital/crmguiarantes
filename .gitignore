@@ -1,0 +1,12 @@
+.claude/
+node_modules/
+.next/
+dist/
+build/
+*.log
+.DS_Store
+.railway/
+coverage/
+.vercel
+.env*
+!.env.example
