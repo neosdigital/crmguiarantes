@@ -109,7 +109,7 @@ export function AddLeadForm({ brokers }: { brokers: BrokerOption[] }) {
               <select
                 value={form.brokerId}
                 onChange={(e) => update("brokerId", e.target.value)}
-                className="w-full rounded-xl border border-[color:var(--color-border-gold)] bg-surface-2 px-4 py-2.5 text-sm text-foreground"
+                className="w-full rounded-xl border border-[color:var(--color-border)] bg-surface-2 px-4 py-2.5 text-sm text-foreground"
               >
                 <option value="">Roleta (automático)</option>
                 {brokers.map((b) => (

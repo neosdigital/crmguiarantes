@@ -124,7 +124,7 @@ export function BackupSettings() {
       </div>
 
       <p className="mt-3 flex items-start gap-1.5 text-xs text-text-secondary">
-        <ShieldCheck size={14} className="mt-0.5 shrink-0 text-gold" />
+        <ShieldCheck size={14} className="mt-0.5 shrink-0 text-accent" />
         Ao adicionar um backup, o CRM só acrescenta o que ainda não tem. Nada é apagado nem sobrescrito,
         e registros que já existem não são duplicados.
       </p>
@@ -133,7 +133,7 @@ export function BackupSettings() {
       {error && <p className="mt-4 rounded-lg bg-danger/10 px-3 py-2 text-sm text-danger">{error}</p>}
 
       {preview && (
-        <div className="mt-4 rounded-xl border border-[color:var(--color-border-gold)] bg-surface-2 p-4">
+        <div className="mt-4 rounded-xl border border-[color:var(--color-border)] bg-surface-2 p-4">
           <p className="text-sm font-medium text-foreground">Prévia — nada foi gravado ainda</p>
           <p className="mt-0.5 text-xs text-text-secondary">
             {file?.name}
@@ -153,11 +153,11 @@ export function BackupSettings() {
               </thead>
               <tbody>
                 {visibleRows(preview).map((t) => (
-                  <tr key={t.table} className="border-t border-[color:var(--color-border-gold)]/40">
+                  <tr key={t.table} className="border-t border-[color:var(--color-border)]/40">
                     <td className="py-1.5 pr-3 text-foreground">{TABLE_LABELS[t.table] ?? t.table}</td>
                     <td className="py-1.5 pr-3 text-right text-text-secondary">{t.inFile}</td>
                     <td className="py-1.5 pr-3 text-right text-text-secondary">{t.skipped}</td>
-                    <td className={["py-1.5 text-right font-medium", t.added > 0 ? "text-gold" : "text-text-secondary"].join(" ")}>
+                    <td className={["py-1.5 text-right font-medium", t.added > 0 ? "text-accent" : "text-text-secondary"].join(" ")}>
                       {t.added}
                     </td>
                   </tr>

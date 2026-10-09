@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { BRAND } from "@/lib/brand";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -8,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "CRM Prospera",
+  title: BRAND.appName,
   description: "Distribuição automática de leads do Meta Ads para corretores",
   manifest: "/manifest.json",
   icons: {
@@ -21,12 +22,12 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Próspera",
+    title: BRAND.shortName,
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#191919",
+  themeColor: "#192338", // --brand-oxford
   width: "device-width",
   initialScale: 1,
 };

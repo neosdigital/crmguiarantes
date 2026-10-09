@@ -9,11 +9,11 @@ import { assignmentStatusLabel } from "@/lib/labels";
 import { applyLeadContactPrivacy } from "@/lib/lead-privacy";
 import { ProtectedContact } from "@/components/leads/protected-contact";
 
-const STATUS_TONE: Record<string, "neutral" | "gold" | "success" | "danger"> = {
+const STATUS_TONE: Record<string, "neutral" | "accent" | "success" | "danger"> = {
   CONTACTED: "success",
   EXPIRED: "danger",
   TRANSFERRED: "neutral",
-  ASSIGNED: "gold",
+  ASSIGNED: "accent",
 };
 
 export default async function BrokerHistoryPage() {

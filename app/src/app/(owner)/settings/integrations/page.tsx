@@ -26,8 +26,8 @@ export default function IntegrationsHubPage() {
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
         {INTEGRATIONS.map((item) => (
           <Link key={item.href} href={item.href}>
-            <Card className="h-full transition-colors hover:border-[color:var(--color-border-gold-strong)]">
-              <item.icon className="text-gold" size={22} />
+            <Card className="h-full transition-colors hover:border-[color:var(--color-border-strong)]">
+              <item.icon className="text-accent" size={22} />
               <p className="mt-3 font-medium text-foreground">{item.title}</p>
               <p className="mt-1 text-sm text-text-secondary">{item.description}</p>
             </Card>

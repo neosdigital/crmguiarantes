@@ -7,7 +7,7 @@ export default function ReportsPage() {
       <h1 className="text-2xl font-semibold text-foreground">Relatórios</h1>
       <p className="mt-1 text-text-secondary">
         Os indicadores completos (leads por corretor, campanha, tempo de resposta, taxa de
-        conversão) estão no <Link href="/dashboard" className="text-gold underline">Dashboard</Link>,
+        conversão) estão no <Link href="/dashboard" className="text-accent underline">Dashboard</Link>,
         com seletor de período. Aqui você exporta os dados brutos em CSV.
       </p>
 
@@ -19,7 +19,7 @@ export default function ReportsPage() {
         </p>
         <Link
           href="/api/leads/export"
-          className="mt-4 inline-flex rounded-xl bg-gold px-4 py-2.5 text-sm font-semibold text-[#191919]"
+          className="mt-4 inline-flex rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
         >
           Exportar todos os leads
         </Link>

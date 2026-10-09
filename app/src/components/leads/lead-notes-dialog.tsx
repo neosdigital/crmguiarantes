@@ -83,7 +83,7 @@ function LeadInfo({ lead }: { lead: NotesResponse["lead"] }) {
   return (
     <section>
       <h2 className="text-xs font-semibold uppercase tracking-wide text-text-secondary">Informações do Lead</h2>
-      <div className="mt-3 rounded-xl border border-[color:var(--color-border-gold)] bg-surface-2">
+      <div className="mt-3 rounded-xl border border-[color:var(--color-border)] bg-surface-2">
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
@@ -94,14 +94,14 @@ function LeadInfo({ lead }: { lead: NotesResponse["lead"] }) {
           <span className="min-w-0 truncate text-lg font-semibold text-foreground">{lead.name}</span>
           <span className="flex shrink-0 items-center gap-1 text-xs text-text-secondary">
             {expanded ? "Ocultar" : "Mais informações"}
-            <ChevronDown size={18} className={["text-gold transition-transform", expanded ? "rotate-180" : ""].join(" ")} />
+            <ChevronDown size={18} className={["text-accent transition-transform", expanded ? "rotate-180" : ""].join(" ")} />
           </span>
         </button>
 
         {expanded && (
           <div
             id="lead-info-details"
-            className="grid grid-cols-1 gap-3 border-t border-[color:var(--color-border-gold)] px-4 py-4 sm:grid-cols-2 lg:grid-cols-3"
+            className="grid grid-cols-1 gap-3 border-t border-[color:var(--color-border)] px-4 py-4 sm:grid-cols-2 lg:grid-cols-3"
           >
             <InfoRow label="Telefone" value={lead.phone} isProtected={protectedContact} />
             <InfoRow label="E-mail" value={lead.email} isProtected={protectedContact} />
@@ -154,12 +154,12 @@ function NoteItem({ note, leadId, onChanged }: { note: Note; leadId: string; onC
 
   return (
     <li className="relative pl-6">
-      <span className="absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full bg-gold" aria-hidden />
-      <div className="rounded-xl border border-[color:var(--color-border-gold)] bg-surface-2 p-3">
+      <span className="absolute left-0 top-1.5 h-2.5 w-2.5 rounded-full bg-accent" aria-hidden />
+      <div className="rounded-xl border border-[color:var(--color-border)] bg-surface-2 p-3">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <p className="text-sm font-medium text-foreground">{authorLabel}</p>
           {note.kind === "OBSERVATION" && (
-            <span className="rounded bg-gold-soft px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-gold">
+            <span className="rounded bg-accent-soft px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-accent">
               Observação do card
             </span>
           )}
@@ -197,7 +197,7 @@ function NoteItem({ note, leadId, onChanged }: { note: Note; leadId: string; onC
         {!editing && (note.canEdit || note.revisions.length > 0) && (
           <div className="mt-2 flex flex-wrap gap-3 text-xs">
             {note.canEdit && (
-              <button type="button" onClick={() => setEditing(true)} className="flex items-center gap-1 text-gold hover:underline">
+              <button type="button" onClick={() => setEditing(true)} className="flex items-center gap-1 text-accent hover:underline">
                 <Pencil size={12} /> Editar
               </button>
             )}
@@ -215,7 +215,7 @@ function NoteItem({ note, leadId, onChanged }: { note: Note; leadId: string; onC
         )}
 
         {showHistory && (
-          <ol className="mt-2 space-y-2 border-t border-[color:var(--color-border-gold)]/40 pt-2">
+          <ol className="mt-2 space-y-2 border-t border-[color:var(--color-border)]/40 pt-2">
             {note.revisions.map((r) => (
               <li key={r.id} className="text-xs">
                 <p className="text-text-secondary">
@@ -286,12 +286,12 @@ export function LeadNotesDialog({ leadId, onClose, onChanged }: { leadId: string
         role="dialog"
         aria-modal="true"
         aria-label="Notas do lead"
-        className="mx-auto flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-[color:var(--color-border-gold)] bg-surface"
+        className="mx-auto flex h-full w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-[color:var(--color-border)] bg-surface"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between gap-3 border-b border-[color:var(--color-border-gold)] px-4 py-3 sm:px-6">
+        <div className="flex items-center justify-between gap-3 border-b border-[color:var(--color-border)] px-4 py-3 sm:px-6">
           <div className="flex min-w-0 items-center gap-2">
-            <StickyNote size={18} className="shrink-0 text-gold" />
+            <StickyNote size={18} className="shrink-0 text-accent" />
             <p className="truncate text-base font-semibold text-foreground">{lead ? `Notas — ${lead.name}` : "Notas do lead"}</p>
           </div>
           <button type="button" onClick={onClose} className="rounded-lg p-2 text-text-secondary hover:bg-surface-2" aria-label="Fechar">
@@ -310,7 +310,7 @@ export function LeadNotesDialog({ leadId, onClose, onChanged }: { leadId: string
               <section className="mt-6">
                 <h2 className="text-xs font-semibold uppercase tracking-wide text-text-secondary">Evolução do atendimento</h2>
 
-                <div className="mt-3 rounded-xl border border-[color:var(--color-border-gold)] bg-surface-2 p-3">
+                <div className="mt-3 rounded-xl border border-[color:var(--color-border)] bg-surface-2 p-3">
                   <Textarea
                     rows={3}
                     placeholder="Escreva uma nova nota sobre este atendimento..."
@@ -328,7 +328,7 @@ export function LeadNotesDialog({ leadId, onClose, onChanged }: { leadId: string
                 {data.notes.length === 0 ? (
                   <p className="mt-4 text-sm text-text-secondary">Nenhuma nota ainda. A primeira nota que você escrever aparece aqui.</p>
                 ) : (
-                  <ol className="relative mt-4 space-y-3 before:absolute before:bottom-2 before:left-[4px] before:top-2 before:w-px before:bg-[color:var(--color-border-gold)]">
+                  <ol className="relative mt-4 space-y-3 before:absolute before:bottom-2 before:left-[4px] before:top-2 before:w-px before:bg-[color:var(--color-border)]">
                     {data.notes.map((note) => (
                       <NoteItem key={`${note.id}-${note.editedAt ?? ""}`} note={note} leadId={leadId} onChanged={refresh} />
                     ))}

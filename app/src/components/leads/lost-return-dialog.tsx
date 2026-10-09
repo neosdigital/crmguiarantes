@@ -42,7 +42,7 @@ export function LostReturnDialog({
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="w-full max-w-sm rounded-2xl border border-[color:var(--color-border-gold)] bg-surface p-4"
+        className="w-full max-w-sm rounded-2xl border border-[color:var(--color-border)] bg-surface p-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-2">
@@ -64,7 +64,7 @@ export function LostReturnDialog({
               key={preset.label}
               type="button"
               onClick={() => onConfirm(preset.period)}
-              className="flex w-full items-center rounded-xl border border-[color:var(--color-border-gold)] bg-surface-2 px-3 py-2.5 text-left text-sm text-foreground transition-colors hover:border-[color:var(--color-border-gold-strong)]"
+              className="flex w-full items-center rounded-xl border border-[color:var(--color-border)] bg-surface-2 px-3 py-2.5 text-left text-sm text-foreground transition-colors hover:border-[color:var(--color-border-strong)]"
             >
               {preset.label}
             </button>
@@ -74,13 +74,13 @@ export function LostReturnDialog({
             <button
               type="button"
               onClick={() => setCustom(true)}
-              className="flex w-full items-center rounded-xl border border-[color:var(--color-border-gold)] bg-surface-2 px-3 py-2.5 text-left text-sm text-foreground transition-colors hover:border-[color:var(--color-border-gold-strong)]"
+              className="flex w-full items-center rounded-xl border border-[color:var(--color-border)] bg-surface-2 px-3 py-2.5 text-left text-sm text-foreground transition-colors hover:border-[color:var(--color-border-strong)]"
             >
               Outro período
             </button>
           ) : (
             <form
-              className="rounded-xl border border-[color:var(--color-border-gold-strong)] bg-surface-2 p-3"
+              className="rounded-xl border border-[color:var(--color-border-strong)] bg-surface-2 p-3"
               onSubmit={(e) => {
                 e.preventDefault();
                 if (customValid) onConfirm({ unit: "months", amount: monthsNumber });

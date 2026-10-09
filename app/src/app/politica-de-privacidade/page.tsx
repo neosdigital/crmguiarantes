@@ -1,15 +1,15 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Política de Privacidade | CRM Prospera",
-  description: "Política de Privacidade do CRM Prospera.",
+  title: "Política de Privacidade | CRM Guilherme Arantes",
+  description: "Política de Privacidade do CRM Guilherme Arantes.",
 };
 
 export default function PrivacyPolicyPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-12 text-foreground">
       <div className="mb-8">
-        <Link href="/" className="text-sm text-gold underline">
+        <Link href="/" className="text-sm text-accent underline">
           ← Voltar
         </Link>
       </div>
@@ -21,9 +21,9 @@ export default function PrivacyPolicyPage() {
         <section>
           <h2 className="mb-2 text-lg font-medium">1. Quem somos</h2>
           <p>
-            O CRM Prospera é um sistema de gestão e distribuição automática de leads
-            utilizado pela <strong>Próspera Relacionamentos &amp; Imóveis</strong>{" "}
-            (&quot;Próspera&quot;, &quot;nós&quot;) para atender contatos gerados por campanhas de
+            O CRM Guilherme Arantes é um sistema de gestão e distribuição automática de leads
+            utilizado por <strong>Guilherme Arantes Corretor</strong>{" "}
+            (&quot;Guilherme Arantes&quot;, &quot;nós&quot;) para atender contatos gerados por campanhas de
             anúncios (Meta Ads / Facebook e Instagram) e pelo WhatsApp. Esta política
             explica quais dados coletamos, como usamos, com quem compartilhamos e quais
             direitos você tem sobre eles, em conformidade com a Lei Geral de Proteção de
@@ -96,7 +96,7 @@ export default function PrivacyPolicyPage() {
           <p>
             Em caso de dúvidas sobre esta política ou sobre o tratamento dos seus dados,
             entre em contato:{" "}
-            <a href="mailto:contato@prosperaimoveis.com.br" className="text-gold underline">
+            <a href="mailto:contato@prosperaimoveis.com.br" className="text-accent underline">
               contato@prosperaimoveis.com.br
             </a>
             .

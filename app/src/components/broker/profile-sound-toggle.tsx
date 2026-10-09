@@ -26,7 +26,7 @@ export function ProfileSoundToggle({ initialValue }: { initialValue: boolean }) 
   }
 
   return (
-    <div className="flex items-center justify-between border-t border-[color:var(--color-border-gold)] pt-4">
+    <div className="flex items-center justify-between border-t border-[color:var(--color-border)] pt-4">
       <div>
         <p className="text-sm text-foreground">Som das notificações: {enabled ? "ativado" : "desativado"}</p>
         <p className="text-xs text-text-secondary">
@@ -41,12 +41,12 @@ export function ProfileSoundToggle({ initialValue }: { initialValue: boolean }) 
         aria-label="Som das notificações"
         className={[
           "h-6 w-11 rounded-full transition-colors",
-          enabled ? "bg-gold" : "bg-surface-2",
+          enabled ? "bg-primary" : "bg-surface-2",
         ].join(" ")}
       >
         <span
           className={[
-            "block h-5 w-5 translate-x-0.5 rounded-full bg-[#191919] transition-transform",
+            "block h-5 w-5 translate-x-0.5 rounded-full bg-foreground transition-transform",
             enabled ? "translate-x-[22px]" : "",
           ].join(" ")}
         />

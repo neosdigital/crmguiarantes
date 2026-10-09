@@ -76,8 +76,8 @@ function VisualTimer({ assignedAt, expiresAt, offsetMs }: { assignedAt: string |
   const expired = remainingMs <= 0;
   const critical = remainingFraction <= 0.2;
   const warning = remainingFraction <= 0.5;
-  const barColor = expired || critical ? "bg-danger" : warning ? "bg-gold" : "bg-success";
-  const textColor = expired || critical ? "text-danger" : warning ? "text-gold" : "text-success";
+  const barColor = expired || critical ? "bg-danger" : warning ? "bg-warning" : "bg-success";
+  const textColor = expired || critical ? "text-danger" : warning ? "text-warning" : "text-success";
 
   return (
     <div className="mt-3">
@@ -132,7 +132,7 @@ function BrokersPassedSummary({ count, names }: { count: number; names: string[]
       {truncated && (
         <button
           onClick={() => setExpanded((v) => !v)}
-          className="mt-1 text-gold underline underline-offset-2 hover:text-gold/80"
+          className="mt-1 text-accent underline underline-offset-2 hover:text-accent/80"
         >
           {expanded ? "Ocultar fluxo" : "Ver todo o fluxo"}
         </button>
@@ -143,7 +143,7 @@ function BrokersPassedSummary({ count, names }: { count: number; names: string[]
 }
 
 function LiveCard({ lead, offsetMs }: { lead: LiveLead; offsetMs: number }) {
-  const statusTone = lead.status === "ASSIGNED" ? "gold" : lead.status === "IN_PROGRESS" ? "success" : "neutral";
+  const statusTone = lead.status === "ASSIGNED" ? "accent" : lead.status === "IN_PROGRESS" ? "success" : "neutral";
   const customFieldsEntries = Object.entries(lead.customFields ?? {});
 
   return (
@@ -173,7 +173,7 @@ function LiveCard({ lead, offsetMs }: { lead: LiveLead; offsetMs: number }) {
       </div>
 
       {customFieldsEntries.length > 0 && (
-        <div className="mt-2 space-y-1 border-t border-[color:var(--color-border-gold)]/40 pt-2">
+        <div className="mt-2 space-y-1 border-t border-[color:var(--color-border)]/40 pt-2">
           {customFieldsEntries.map(([q, a]) => (
             <p key={q} className="text-xs">
               <span className="text-text-secondary">{formatMetaFieldText(q)}: </span>
@@ -194,7 +194,7 @@ function LiveCard({ lead, offsetMs }: { lead: LiveLead; offsetMs: number }) {
       {lead.status === "ASSIGNED" && lead.expiresAt ? (
         <VisualTimer assignedAt={lead.assignedAt} expiresAt={lead.expiresAt} offsetMs={offsetMs} />
       ) : (
-        <p className="mt-3 font-mono text-xl font-semibold text-gold">
+        <p className="mt-3 font-mono text-xl font-semibold text-accent">
           {lead.status === "CONTACTED" ? "ENTRANDO EM CONTATO" : "EM ATENDIMENTO"}
         </p>
       )}

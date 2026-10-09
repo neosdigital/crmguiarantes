@@ -51,7 +51,7 @@ export function LeadAssignControl({
         value={target}
         onChange={(e) => setTarget(e.target.value)}
         aria-label="Destino da transferência"
-        className="w-full rounded-xl border border-[color:var(--color-border-gold)] bg-surface-2 px-3 py-2 text-sm text-foreground"
+        className="w-full rounded-xl border border-[color:var(--color-border)] bg-surface-2 px-3 py-2 text-sm text-foreground"
       >
         <option value="">Escolha o destino...</option>
         <option value={ROTATION}>Devolver para a roleta</option>

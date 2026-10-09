@@ -70,7 +70,7 @@ export function MetaIntegrationSettings({ webhookUrl }: { webhookUrl: string }) 
           Configure esta URL no painel do seu app em{" "}
           <span className="text-foreground">developers.facebook.com → Webhooks → Página → leadgen</span>:
         </p>
-        <code className="mt-2 block break-all rounded-lg bg-surface-2 px-3 py-2 text-xs text-gold">{webhookUrl}</code>
+        <code className="mt-2 block break-all rounded-lg bg-surface-2 px-3 py-2 text-xs text-accent">{webhookUrl}</code>
         <p className="mt-2 text-xs text-text-secondary">
           Verify Token: use o valor da variável <code>META_VERIFY_TOKEN</code> do seu ambiente.
         </p>

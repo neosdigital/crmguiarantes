@@ -7,6 +7,7 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { poster, FetchError } from "@/lib/fetcher";
+import { BRAND } from "@/lib/brand";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -38,25 +39,25 @@ export default function SignupPage() {
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <Image
-            src="/logo-prospera.png"
-            alt="Próspera"
-            width={2170}
-            height={725}
+            src={BRAND.logo.src}
+            alt={BRAND.logo.alt}
+            width={BRAND.logo.width}
+            height={BRAND.logo.height}
             priority
-            className="mx-auto mb-4 h-auto w-full max-w-[220px]"
+            className="mx-auto -mt-4 mb-2 h-auto w-full max-w-[200px]"
           />
           <h1 className="text-xl font-semibold text-foreground">Criar sua imobiliária</h1>
           <p className="mt-1 text-sm text-text-secondary">Comece a distribuir leads automaticamente</p>
         </div>
 
         {done ? (
-          <div className="rounded-2xl border border-[color:var(--color-border-gold)] bg-surface p-6 text-center">
+          <div className="rounded-2xl border border-[color:var(--color-border)] bg-surface p-6 text-center">
             <p className="text-foreground">Conta criada! Redirecionando para o login...</p>
           </div>
         ) : (
           <form
             action={handleSubmit}
-            className="space-y-4 rounded-2xl border border-[color:var(--color-border-gold)] bg-surface p-6"
+            className="space-y-4 rounded-2xl border border-[color:var(--color-border)] bg-surface p-6"
           >
             {error && <p className="rounded-lg bg-danger/10 px-3 py-2 text-sm text-danger">{error}</p>}
 
@@ -83,7 +84,7 @@ export default function SignupPage() {
 
             <p className="text-center text-xs text-text-secondary">
               Já tem uma conta?{" "}
-              <Link href="/login" className="text-gold underline">
+              <Link href="/login" className="text-accent underline">
                 Entrar
               </Link>
             </p>

@@ -17,7 +17,7 @@ export type LeadRow = {
   notes: string | null;
   status: string;
   statusLabel: string;
-  statusTone: "neutral" | "gold" | "success" | "danger";
+  statusTone: "neutral" | "accent" | "success" | "danger";
   createdAtLabel: string;
 };
 
@@ -90,14 +90,14 @@ export function LeadsTable({ leads }: { leads: LeadRow[] }) {
       <div className="overflow-x-auto">
         <table className="w-full min-w-[960px] text-sm">
           <thead>
-            <tr className="border-b border-[color:var(--color-border-gold)] text-left text-xs uppercase text-text-secondary">
+            <tr className="border-b border-[color:var(--color-border)] text-left text-xs uppercase text-text-secondary">
               <th className="w-10 px-4 py-3">
                 <input
                   type="checkbox"
                   checked={allSelected}
                   onChange={toggleAll}
                   aria-label="Selecionar todos os leads"
-                  className="h-4 w-4 accent-gold"
+                  className="h-4 w-4 accent-accent"
                 />
               </th>
               <th className="px-4 py-3">Nome</th>
@@ -113,7 +113,7 @@ export function LeadsTable({ leads }: { leads: LeadRow[] }) {
             {leads.map((lead) => (
               <tr
                 key={lead.id}
-                className="border-b border-[color:var(--color-border-gold)]/40 last:border-0 hover:bg-surface-2"
+                className="border-b border-[color:var(--color-border)]/40 last:border-0 hover:bg-surface-2"
               >
                 <td className="px-4 py-3">
                   <input
@@ -121,11 +121,11 @@ export function LeadsTable({ leads }: { leads: LeadRow[] }) {
                     checked={selected.has(lead.id)}
                     onChange={() => toggleOne(lead.id)}
                     aria-label={`Selecionar ${lead.name}`}
-                    className="h-4 w-4 accent-gold"
+                    className="h-4 w-4 accent-accent"
                   />
                 </td>
                 <td className="px-4 py-3">
-                  <Link href={`/leads/${lead.id}`} className="font-medium text-foreground hover:text-gold">
+                  <Link href={`/leads/${lead.id}`} className="font-medium text-foreground hover:text-accent">
                     {lead.name}
                   </Link>
                 </td>

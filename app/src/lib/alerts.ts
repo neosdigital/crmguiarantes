@@ -1,5 +1,7 @@
 "use client";
 
+import { BRAND } from "@/lib/brand";
+
 let audioCtx: AudioContext | null = null;
 let unlocked = false;
 
@@ -79,7 +81,7 @@ export function showLeadNotification(title: string, body: string) {
   if (typeof window === "undefined" || !("Notification" in window)) return;
   if (Notification.permission !== "granted") return;
   try {
-    new Notification(title, { body, icon: "/logo-prospera.png", tag: `lead-${Date.now()}` });
+    new Notification(title, { body, icon: BRAND.logo.src, tag: `lead-${Date.now()}` });
   } catch {
     // Alguns navegadores mobile não suportam `new Notification()` fora de um Service Worker — ok ignorar.
   }

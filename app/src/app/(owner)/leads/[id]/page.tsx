@@ -109,7 +109,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           </div>
 
           {lead.customFields && Object.keys(lead.customFields as object).length > 0 && (
-            <div className="mt-4 space-y-1.5 border-t border-[color:var(--color-border-gold)] pt-4">
+            <div className="mt-4 space-y-1.5 border-t border-[color:var(--color-border)] pt-4">
               {Object.entries(lead.customFields as Record<string, unknown>).map(([q, a]) => (
                 <p key={q} className="text-sm">
                   <span className="text-text-secondary">{formatMetaFieldText(q)}: </span>
@@ -123,7 +123,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         <Card>
           <CardLabel>Situação atual</CardLabel>
           <div className="mt-3 space-y-2 text-sm">
-            <Badge tone="gold">{leadStatusLabel(lead.status)}</Badge>
+            <Badge tone="accent">{leadStatusLabel(lead.status)}</Badge>
             <p>
               <span className="text-text-secondary">Corretor atual: </span>
               {lead.currentBroker?.displayName ?? "—"}
@@ -134,20 +134,20 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </p>
           </div>
 
-          <div className="mt-4 space-y-2 border-t border-[color:var(--color-border-gold)] pt-4">
+          <div className="mt-4 space-y-2 border-t border-[color:var(--color-border)] pt-4">
             {lead.assignments.map((a) => (
               <div key={a.id} className="flex items-center justify-between text-sm">
                 <span>
                   #{a.attemptNumber} {a.broker.displayName}
                 </span>
-                <Badge tone={a.status === "CONTACTED" ? "success" : a.status === "EXPIRED" ? "danger" : "gold"}>
+                <Badge tone={a.status === "CONTACTED" ? "success" : a.status === "EXPIRED" ? "danger" : "accent"}>
                   {assignmentStatusLabel(a.status)}
                 </Badge>
               </div>
             ))}
           </div>
 
-          <div className="mt-4 border-t border-[color:var(--color-border-gold)] pt-4">
+          <div className="mt-4 border-t border-[color:var(--color-border)] pt-4">
             <LeadAssignControl
               leadId={lead.id}
               currentBrokerId={lead.currentBrokerId}
@@ -155,7 +155,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             />
           </div>
 
-          <div className="mt-4 border-t border-[color:var(--color-border-gold)] pt-4">
+          <div className="mt-4 border-t border-[color:var(--color-border)] pt-4">
             <LeadNotesEditor key={lead.notes ?? ""} leadId={lead.id} initialNotes={lead.notes} />
             <div className="mt-3">
               <OpenNotesButton leadId={lead.id} noteCount={lead._count.noteEntries} />
@@ -165,7 +165,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
         <Card>
           <CardLabel>Timeline</CardLabel>
-          <ol className="mt-3 space-y-3 border-l border-[color:var(--color-border-gold)] pl-4">
+          <ol className="mt-3 space-y-3 border-l border-[color:var(--color-border)] pl-4">
             {lead.auditLogs.map((log) => (
               <li key={log.id} className="text-sm">
                 <p className="text-xs text-text-secondary">{formatBrasilia(log.createdAt, "dd/MM HH:mm:ss")}</p>

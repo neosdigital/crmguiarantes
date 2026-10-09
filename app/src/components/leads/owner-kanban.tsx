@@ -20,7 +20,7 @@ export function OwnerKanban({ brokers }: { brokers: { id: string; displayName: s
           value={brokerId}
           onChange={(e) => setBrokerId(e.target.value)}
           aria-label="Filtrar por corretor"
-          className="rounded-xl border border-[color:var(--color-border-gold)] bg-surface-2 px-4 py-2.5 text-sm text-foreground"
+          className="rounded-xl border border-[color:var(--color-border)] bg-surface-2 px-4 py-2.5 text-sm text-foreground"
         >
           <option value="">Todos os corretores</option>
           {brokers.map((b) => (

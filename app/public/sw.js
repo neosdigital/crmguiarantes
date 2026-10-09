@@ -1,4 +1,4 @@
-// Service Worker do CRM Próspera — só cuida de Web Push (não faz cache/offline de páginas,
+// Service Worker do CRM Guilherme Arantes — só cuida de Web Push (não faz cache/offline de páginas,
 // não interfere no funcionamento normal do app). Arquivo estático, servido direto de /sw.js
 // (fora do bundler do Next.js).
 
@@ -11,7 +11,7 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("push", (event) => {
-  let payload = { title: "Novo lead!", body: "Você tem um novo lead no CRM Próspera.", url: "/" };
+  let payload = { title: "Novo lead!", body: "Você tem um novo lead no CRM Guilherme Arantes.", url: "/" };
   try {
     if (event.data) payload = { ...payload, ...event.data.json() };
   } catch {

@@ -5,7 +5,7 @@ export function Textarea({ className, ...props }: TextareaHTMLAttributes<HTMLTex
   return (
     <textarea
       className={clsx(
-        "w-full rounded-xl border border-[color:var(--color-border-gold)] bg-surface-2 px-4 py-2.5 text-sm text-foreground placeholder:text-text-secondary outline-none transition-colors focus:border-[color:var(--color-border-gold-strong)]",
+        "w-full rounded-xl border border-[color:var(--color-border)] bg-surface-2 px-4 py-2.5 text-sm text-foreground placeholder:text-text-secondary outline-none transition-colors focus:border-[color:var(--color-border-strong)]",
         className
       )}
       {...props}

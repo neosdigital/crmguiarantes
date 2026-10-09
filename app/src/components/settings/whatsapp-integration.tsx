@@ -80,7 +80,7 @@ export function WhatsAppIntegrationSettings() {
         <ol className="mt-2 list-decimal space-y-1.5 pl-4 text-sm text-text-secondary">
           <li>No mesmo app da Meta usado para os Leads, adicione o produto <span className="text-foreground">WhatsApp</span>.</li>
           <li>Cadastre/verifique um número de telefone da empresa (não pode ser um número já usado no app pessoal do WhatsApp).</li>
-          <li>Gere um token de acesso com a permissão <code className="text-gold">whatsapp_business_messaging</code>.</li>
+          <li>Gere um token de acesso com a permissão <code className="text-accent">whatsapp_business_messaging</code>.</li>
           <li>
             Em <span className="text-foreground">WhatsApp Manager → Modelos de mensagem</span>, crie os três templates
             abaixo (categoria Utilidade) e aguarde a aprovação da Meta antes de usar.
@@ -93,9 +93,9 @@ export function WhatsAppIntegrationSettings() {
           <CardLabel>Templates a criar e aprovar</CardLabel>
           <div className="mt-3 space-y-4">
             {Object.values(templates).map((t) => (
-              <div key={t.name} className="rounded-lg border border-[color:var(--color-border-gold)]/40 p-3">
+              <div key={t.name} className="rounded-lg border border-[color:var(--color-border)]/40 p-3">
                 <p className="text-xs text-text-secondary">
-                  Nome: <code className="text-gold">{t.name}</code> · Categoria: {t.category} · Idioma: {t.language}
+                  Nome: <code className="text-accent">{t.name}</code> · Categoria: {t.category} · Idioma: {t.language}
                 </p>
                 <p className="mt-1.5 text-sm text-foreground">{t.body}</p>
               </div>

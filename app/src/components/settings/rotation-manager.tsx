@@ -150,7 +150,7 @@ export function RotationManager() {
           </form>
           {formError && <p className="mt-2 text-sm text-danger">{formError}</p>}
           {createdInfo && (
-            <p className="mt-3 rounded-lg bg-gold-soft px-3 py-2 text-sm text-gold">
+            <p className="mt-3 rounded-lg bg-accent-soft px-3 py-2 text-sm text-accent">
               Corretor criado. Senha temporária para <strong>{createdInfo.email}</strong>:{" "}
               <code>{createdInfo.tempPassword}</code> — compartilhe com segurança.
             </p>
@@ -164,7 +164,7 @@ export function RotationManager() {
           {brokers.map((b, idx) => (
             <li
               key={b.id}
-              className="flex flex-col gap-3 border-b border-[color:var(--color-border-gold)]/40 px-5 py-4 last:border-0 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-3 border-b border-[color:var(--color-border)]/40 px-5 py-4 last:border-0 sm:flex-row sm:items-center sm:justify-between"
             >
               <div className="flex items-center gap-4">
                 <span className="w-6 shrink-0 text-sm text-text-secondary">{String(idx + 1).padStart(2, "0")}</span>

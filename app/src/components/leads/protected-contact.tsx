@@ -11,11 +11,11 @@ export function ProtectedContact({ value, isProtected }: { value: string | null;
 
   return (
     <span className="inline-flex items-center gap-1" title="Contato protegido: este lead não está na sua carteira">
-      <Lock size={11} className="shrink-0 text-gold" aria-hidden />
+      <Lock size={11} className="shrink-0 text-accent" aria-hidden />
       <span className="select-none blur-[1.5px]" aria-label="Contato protegido">
         {value}
       </span>
-      <span className="rounded bg-gold-soft px-1 text-[10px] font-medium uppercase tracking-wide text-gold">protegido</span>
+      <span className="rounded bg-accent-soft px-1 text-[10px] font-medium uppercase tracking-wide text-accent">protegido</span>
     </span>
   );
 }

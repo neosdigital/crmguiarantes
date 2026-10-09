@@ -21,11 +21,11 @@ const STATUS_LABEL: Record<PushStatus, string> = {
   "not-subscribed": "Desativado neste dispositivo",
 };
 
-const STATUS_TONE: Record<PushStatus, "neutral" | "gold" | "success" | "danger"> = {
+const STATUS_TONE: Record<PushStatus, "neutral" | "accent" | "success" | "danger"> = {
   loading: "neutral",
   unsupported: "neutral",
-  "ios-not-installed": "gold",
-  default: "gold",
+  "ios-not-installed": "accent",
+  default: "accent",
   denied: "danger",
   subscribed: "success",
   "not-subscribed": "neutral",
@@ -111,7 +111,7 @@ export function PushNotificationSettings({ isAdmin }: { isAdmin: boolean }) {
           {data?.subscriptions.map((sub) => (
             <div
               key={sub.id}
-              className="flex items-center justify-between gap-3 rounded-xl border border-[color:var(--color-border-gold)] px-3 py-2.5"
+              className="flex items-center justify-between gap-3 rounded-xl border border-[color:var(--color-border)] px-3 py-2.5"
             >
               <div className="flex items-center gap-2.5 text-sm">
                 <Smartphone size={16} className="text-text-secondary" />

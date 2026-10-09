@@ -25,15 +25,16 @@ export function SimpleBarChart({
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} margin={{ left: -20 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(246,195,36,0.08)" vertical={false} />
-              <XAxis dataKey={nameKey} tick={{ fill: "#A7A7A0", fontSize: 12 }} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fill: "#A7A7A0", fontSize: 12 }} axisLine={false} tickLine={false} allowDecimals={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
+              <XAxis dataKey={nameKey} tick={{ fill: "var(--color-text-secondary)", fontSize: 12 }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fill: "var(--color-text-secondary)", fontSize: 12 }} axisLine={false} tickLine={false} allowDecimals={false} />
               <Tooltip
-                contentStyle={{ background: "#222222", border: "1px solid rgba(246,195,36,0.2)", borderRadius: 12 }}
-                labelStyle={{ color: "#FFFFF0" }}
-                cursor={{ fill: "rgba(246,195,36,0.06)" }}
+                contentStyle={{ background: "var(--color-surface)", border: "1px solid var(--color-border-strong)", borderRadius: 12 }}
+                labelStyle={{ color: "var(--foreground)" }}
+                itemStyle={{ color: "var(--brand-jordy)" }}
+                cursor={{ fill: "var(--color-accent-soft)" }}
               />
-              <Bar dataKey={dataKey} fill="#F6C324" radius={[6, 6, 0, 0]} />
+              <Bar dataKey={dataKey} fill="var(--brand-jordy)" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         )}

@@ -57,9 +57,9 @@ export function BrokerAlertListener() {
         playLeadAlertSound();
         setNeedsTap(false);
       }}
-      className="fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full border border-[color:var(--color-border-gold)] bg-surface px-4 py-2 text-xs text-foreground shadow-lg"
+      className="fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full border border-[color:var(--color-border)] bg-surface px-4 py-2 text-xs text-foreground shadow-lg"
     >
-      <Volume2 size={14} className="text-gold" />
+      <Volume2 size={14} className="text-accent" />
       Toque para ativar o som dos alertas
     </button>
   );

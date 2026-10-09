@@ -10,18 +10,18 @@ import { SendTestLeadButton } from "@/components/leads/send-test-lead-button";
 import { LeadsTable, type LeadRow } from "@/components/leads/leads-table";
 import { AddLeadForm } from "@/components/leads/add-lead-form";
 
-const STATUS_TONE: Record<string, "neutral" | "gold" | "success" | "danger"> = {
+const STATUS_TONE: Record<string, "neutral" | "accent" | "success" | "danger"> = {
   NEW: "neutral",
   WAITING_ASSIGNMENT: "neutral",
-  ASSIGNED: "gold",
-  CONTACTED: "gold",
+  ASSIGNED: "accent",
+  CONTACTED: "accent",
   IN_PROGRESS: "success",
   QUALIFIED: "success",
   SCHEDULED: "success",
   CONVERTED: "success",
   LOST: "danger",
   EXPIRED: "danger",
-  REMARKETING: "gold",
+  REMARKETING: "accent",
 };
 
 export default async function LeadsPage({
@@ -92,7 +92,7 @@ export default async function LeadsPage({
         <select
           name="status"
           defaultValue={status ?? ""}
-          className="rounded-xl border border-[color:var(--color-border-gold)] bg-surface-2 px-4 py-2.5 text-sm text-foreground"
+          className="rounded-xl border border-[color:var(--color-border)] bg-surface-2 px-4 py-2.5 text-sm text-foreground"
         >
           <option value="">Todos os status</option>
           {Object.keys(STATUS_TONE).map((s) => (
@@ -102,18 +102,18 @@ export default async function LeadsPage({
           ))}
         </select>
         <label className="flex items-center gap-2 px-1 text-sm text-text-secondary">
-          <input type="checkbox" name="withNotes" value="1" defaultChecked={!!withNotes} className="h-4 w-4 accent-gold" />
+          <input type="checkbox" name="withNotes" value="1" defaultChecked={!!withNotes} className="h-4 w-4 accent-accent" />
           Só com observação
         </label>
         <button
           type="submit"
-          className="rounded-xl bg-gold px-4 py-2.5 text-sm font-semibold text-[#191919]"
+          className="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary-hover"
         >
           Filtrar
         </button>
         <Link
           href={`/api/leads/export${status ? `?status=${status}` : ""}`}
-          className="rounded-xl border border-[color:var(--color-border-gold)] px-4 py-2.5 text-sm text-foreground"
+          className="rounded-xl border border-[color:var(--color-border)] px-4 py-2.5 text-sm text-foreground"
         >
           Exportar CSV
         </Link>

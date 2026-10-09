@@ -25,7 +25,7 @@ export function NotificationHealthBanner() {
     <div
       className={[
         "border-b px-4 py-2.5 text-sm sm:px-8",
-        critical ? "border-danger/40 bg-danger/10 text-danger" : "border-[color:var(--color-border-gold)] bg-gold-soft text-foreground",
+        critical ? "border-danger/40 bg-danger/10 text-danger" : "border-[color:var(--color-border)] bg-accent-soft text-foreground",
       ].join(" ")}
     >
       <button type="button" onClick={() => setOpen((o) => !o)} className="flex w-full items-center gap-2 text-left">

@@ -5,6 +5,7 @@ import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { BRAND } from "@/lib/brand";
 
 const ERROR_MESSAGES: Record<string, string> = {
   CredentialsSignin: "Email ou senha incorretos.",
@@ -39,17 +40,18 @@ export default async function LoginPage({
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <Image
-            src="/logo-prospera.png"
-            alt="Próspera"
-            width={2170}
-            height={725}
+            src={BRAND.logo.src}
+            alt={BRAND.logo.alt}
+            width={BRAND.logo.width}
+            height={BRAND.logo.height}
             priority
-            className="mx-auto mb-4 h-auto w-full max-w-[220px]"
+            className="mx-auto -mt-4 mb-2 h-auto w-full max-w-[200px]"
           />
+          <h1 className="text-xl font-semibold text-foreground">{BRAND.appName}</h1>
           <p className="mt-1 text-sm text-text-secondary">Entre com sua conta para continuar</p>
         </div>
 
-        <form action={login} className="space-y-4 rounded-2xl border border-[color:var(--color-border-gold)] bg-surface p-6">
+        <form action={login} className="space-y-4 rounded-2xl border border-[color:var(--color-border)] bg-surface p-6">
           {error && (
             <p className="rounded-lg bg-danger/10 px-3 py-2 text-sm text-danger">
               {ERROR_MESSAGES[error] ?? ERROR_MESSAGES.Default}
@@ -72,7 +74,7 @@ export default async function LoginPage({
 
           <p className="text-center text-xs text-text-secondary">
             Sua imobiliária ainda não tem conta?{" "}
-            <Link href="/signup" className="text-gold underline">
+            <Link href="/signup" className="text-accent underline">
               Criar conta
             </Link>
           </p>

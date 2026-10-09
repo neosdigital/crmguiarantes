@@ -20,7 +20,7 @@ export function BrokerRanking({ brokers, nextBroker }: { brokers: BrokerRow[]; n
         <CardLabel>Ranking de corretores</CardLabel>
         {nextBroker && (
           <span className="text-xs text-text-secondary">
-            Próximo da fila: <span className="font-medium text-gold">{nextBroker}</span>
+            Próximo da fila: <span className="font-medium text-accent">{nextBroker}</span>
           </span>
         )}
       </div>
@@ -28,7 +28,7 @@ export function BrokerRanking({ brokers, nextBroker }: { brokers: BrokerRow[]; n
       <div className="overflow-x-auto">
         <table className="w-full min-w-[560px] text-sm">
           <thead>
-            <tr className="border-b border-[color:var(--color-border-gold)] text-left text-xs uppercase text-text-secondary">
+            <tr className="border-b border-[color:var(--color-border)] text-left text-xs uppercase text-text-secondary">
               <th className="py-2 pr-4">Corretor</th>
               <th className="py-2 pr-4">Status</th>
               <th className="py-2 pr-4">Recebidos</th>
@@ -39,7 +39,7 @@ export function BrokerRanking({ brokers, nextBroker }: { brokers: BrokerRow[]; n
           </thead>
           <tbody>
             {brokers.map((b) => (
-              <tr key={b.id} className="border-b border-[color:var(--color-border-gold)]/40 last:border-0">
+              <tr key={b.id} className="border-b border-[color:var(--color-border)]/40 last:border-0">
                 <td className="py-2.5 pr-4 font-medium text-foreground">
                   {b.name} <span className="text-text-secondary">#{b.rotationPosition}</span>
                 </td>

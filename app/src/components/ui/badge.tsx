@@ -1,11 +1,11 @@
 import { clsx } from "clsx";
 import type { HTMLAttributes } from "react";
 
-type Tone = "neutral" | "gold" | "success" | "danger";
+type Tone = "neutral" | "accent" | "success" | "danger";
 
 const TONES: Record<Tone, string> = {
   neutral: "bg-surface-2 text-text-secondary",
-  gold: "bg-gold-soft text-gold",
+  accent: "bg-accent-soft text-accent",
   success: "bg-success/10 text-success",
   danger: "bg-danger/10 text-danger",
 };

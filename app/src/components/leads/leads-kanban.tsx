@@ -62,7 +62,7 @@ function ScheduleCountdown({ at, kind }: { at: string; kind: "return" | "reminde
   const Icon = kind === "return" ? Timer : BellRing;
   return (
     <p
-      className="mt-2 flex items-center gap-1.5 rounded-lg bg-gold-soft px-2 py-1.5 text-xs font-medium text-gold"
+      className="mt-2 flex items-center gap-1.5 rounded-lg bg-accent-soft px-2 py-1.5 text-xs font-medium text-accent"
       title={kind === "return" ? `Volta para a roleta em ${when}` : `Lembrete para o corretor em ${when}`}
     >
       <Icon size={13} className="shrink-0" />
@@ -96,7 +96,7 @@ function ChangeStatusDialog({
         role="dialog"
         aria-modal="true"
         aria-label={`Mudar status de ${lead.name}`}
-        className="w-full max-w-sm rounded-2xl border border-[color:var(--color-border-gold)] bg-surface p-4"
+        className="w-full max-w-sm rounded-2xl border border-[color:var(--color-border)] bg-surface p-4"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">
@@ -124,12 +124,12 @@ function ChangeStatusDialog({
                 className={[
                   "flex w-full items-center justify-between rounded-xl border px-3 py-2.5 text-left text-sm transition-colors",
                   current
-                    ? "border-[color:var(--color-border-gold-strong)] bg-gold-soft text-foreground"
-                    : "border-[color:var(--color-border-gold)] bg-surface-2 text-foreground hover:border-[color:var(--color-border-gold-strong)]",
+                    ? "border-[color:var(--color-border-strong)] bg-accent-soft text-foreground"
+                    : "border-[color:var(--color-border)] bg-surface-2 text-foreground hover:border-[color:var(--color-border-strong)]",
                 ].join(" ")}
               >
                 {col.label}
-                {current && <Check size={15} className="text-gold" />}
+                {current && <Check size={15} className="text-accent" />}
               </button>
             );
           })}
@@ -159,14 +159,14 @@ function KanbanCard({
     <div
       draggable
       onDragStart={(e) => onDragStart(e, lead.id)}
-      className="cursor-grab rounded-xl border border-[color:var(--color-border-gold)] bg-surface p-3 active:cursor-grabbing"
+      className="cursor-grab rounded-xl border border-[color:var(--color-border)] bg-surface p-3 active:cursor-grabbing"
     >
       <p className="text-sm font-medium text-foreground">{lead.name}</p>
-      {lead.brokerName && <p className="mt-0.5 text-xs text-gold">Corretor: {lead.brokerName}</p>}
+      {lead.brokerName && <p className="mt-0.5 text-xs text-accent">Corretor: {lead.brokerName}</p>}
       <div className="mt-1 space-y-0.5 text-xs text-text-secondary">
         {lead.phone && <p>{lead.phone}</p>}
         {lead.email && (
-          <a href={`mailto:${lead.email}`} className="block truncate hover:text-gold" title={lead.email}>
+          <a href={`mailto:${lead.email}`} className="block truncate hover:text-accent" title={lead.email}>
             {lead.email}
           </a>
         )}
@@ -320,8 +320,8 @@ export function LeadsKanban({ endpoint, emptyMessage }: { endpoint: string; empt
                 className={[
                   "min-h-[200px] rounded-2xl border p-3 transition-colors",
                   dragOverStatus === col.status
-                    ? "border-[color:var(--color-border-gold-strong)] bg-gold-soft"
-                    : "border-[color:var(--color-border-gold)] bg-surface-2",
+                    ? "border-[color:var(--color-border-strong)] bg-accent-soft"
+                    : "border-[color:var(--color-border)] bg-surface-2",
                 ].join(" ")}
               >
                 <div className="mb-3 flex items-center justify-between px-1">

@@ -86,7 +86,7 @@ function DateRangeFilter({
       </Button>
 
       {open && (
-        <div className="absolute right-0 z-20 mt-2 w-64 rounded-xl border border-[color:var(--color-border-gold)] bg-surface p-4 shadow-lg">
+        <div className="absolute right-0 z-20 mt-2 w-64 rounded-xl border border-[color:var(--color-border)] bg-surface p-4 shadow-lg">
           <p className="mb-3 text-xs font-medium uppercase tracking-wide text-text-secondary">
             Período personalizado
           </p>

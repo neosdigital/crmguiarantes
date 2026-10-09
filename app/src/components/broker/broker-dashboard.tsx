@@ -95,12 +95,12 @@ function LeadCard({ assignment, serverOffsetMs, onClaim }: { assignment: LeadAss
         critical
           ? "border-danger/50 bg-danger/5"
           : warning
-            ? "border-[color:var(--color-border-gold-strong)] bg-gold-soft"
-            : "border-[color:var(--color-border-gold)] bg-surface",
+            ? "border-[color:var(--color-border-strong)] bg-accent-soft"
+            : "border-[color:var(--color-border)] bg-surface",
       ].join(" ")}
     >
       <div className="mb-4 flex items-center justify-between">
-        <Badge tone="gold">NOVO LEAD</Badge>
+        <Badge tone="accent">NOVO LEAD</Badge>
         <div className={["flex items-center gap-1.5 text-sm font-medium", critical ? "text-danger" : "text-text-secondary"].join(" ")}>
           <Clock size={14} />
           Tentativa {assignment.attemptNumber}
@@ -116,7 +116,7 @@ function LeadCard({ assignment, serverOffsetMs, onClaim }: { assignment: LeadAss
       </div>
 
       {customFieldsEntries.length > 0 && (
-        <div className="mt-4 space-y-1.5 border-t border-[color:var(--color-border-gold)] pt-4">
+        <div className="mt-4 space-y-1.5 border-t border-[color:var(--color-border)] pt-4">
           {customFieldsEntries.map(([q, a]) => (
             <p key={q} className="text-sm">
               <span className="text-text-secondary">{formatMetaFieldText(q)}: </span>
@@ -133,7 +133,7 @@ function LeadCard({ assignment, serverOffsetMs, onClaim }: { assignment: LeadAss
         <p
           className={[
             "mt-1 font-mono text-5xl font-bold tabular-nums",
-            expired ? "text-danger" : critical ? "text-danger" : warning ? "text-gold" : "text-foreground",
+            expired ? "text-danger" : critical ? "text-danger" : warning ? "text-warning" : "text-foreground",
           ].join(" ")}
         >
           {expired ? "00:00" : formatCountdown(remainingMs)}
@@ -168,10 +168,10 @@ function RotationQueue({ items }: { items: MyLeadsResponse["rotationQueue"] }) {
   if (items.length === 0) return null;
 
   return (
-    <div className="mt-4 space-y-1.5 rounded-xl border border-[color:var(--color-border-gold)] bg-surface px-3 py-2.5">
+    <div className="mt-4 space-y-1.5 rounded-xl border border-[color:var(--color-border)] bg-surface px-3 py-2.5">
       {items.map((item) => (
         <p key={item.leadId} className="flex items-start gap-2 text-xs text-text-secondary">
-          <RefreshCw size={12} className="mt-0.5 shrink-0 text-gold" />
+          <RefreshCw size={12} className="mt-0.5 shrink-0 text-accent" />
           <span>
             Lead <span className="font-medium text-foreground">{item.leadName}</span> está disponível na roleta
             {item.brokersAhead !== null &&
@@ -239,7 +239,7 @@ export function BrokerDashboard({ brokerFirstName }: { brokerFirstName: string }
         ))}
 
         {!isLoading && active.length === 0 && (
-          <div className="rounded-2xl border border-dashed border-[color:var(--color-border-gold)] p-10 text-center">
+          <div className="rounded-2xl border border-dashed border-[color:var(--color-border)] p-10 text-center">
             <p className="text-text-secondary">
               Quando um novo lead chegar pelo Meta Ads e for atribuído a você, ele aparecerá aqui
               automaticamente.

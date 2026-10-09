@@ -29,15 +29,15 @@ export function PushNotificationBanner() {
 
   if (status === "ios-not-installed") {
     return (
-      <div className="mb-6 flex flex-wrap items-start justify-between gap-3 rounded-xl border border-[color:var(--color-border-gold-strong)] bg-gold-soft px-4 py-3">
-        <div className="flex items-start gap-2 text-sm text-gold">
+      <div className="mb-6 flex flex-wrap items-start justify-between gap-3 rounded-xl border border-[color:var(--color-border-strong)] bg-accent-soft px-4 py-3">
+        <div className="flex items-start gap-2 text-sm text-accent">
           <Share size={16} className="mt-0.5 shrink-0" />
           <span>
             Pra receber notificações no iPhone, adicione o CRM à Tela de Início: toque em{" "}
             <strong>Compartilhar</strong> e depois em <strong>&quot;Adicionar à Tela de Início&quot;</strong>.
           </span>
         </div>
-        <button onClick={() => setDismissed(true)} className="p-1 text-gold/70 hover:text-gold" aria-label="Dispensar">
+        <button onClick={() => setDismissed(true)} className="p-1 text-accent/70 hover:text-accent" aria-label="Dispensar">
           <X size={16} />
         </button>
       </div>
@@ -59,8 +59,8 @@ export function PushNotificationBanner() {
   }
 
   return (
-    <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[color:var(--color-border-gold-strong)] bg-gold-soft px-4 py-3">
-      <div className="flex items-center gap-2 text-sm text-gold">
+    <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[color:var(--color-border-strong)] bg-accent-soft px-4 py-3">
+      <div className="flex items-center gap-2 text-sm text-accent">
         <Bell size={16} />
         Ative as notificações para ser avisado assim que um novo lead chegar — mesmo com o CRM fechado.
       </div>
@@ -71,11 +71,11 @@ export function PushNotificationBanner() {
             activate();
           }}
           disabled={busy}
-          className="rounded-lg bg-gold px-3 py-1.5 text-xs font-semibold text-[#191919] disabled:opacity-60"
+          className="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary-hover disabled:opacity-60"
         >
           {busy ? "Ativando..." : "Ativar"}
         </button>
-        <button onClick={() => setDismissed(true)} className="p-1 text-gold/70 hover:text-gold" aria-label="Dispensar">
+        <button onClick={() => setDismissed(true)} className="p-1 text-accent/70 hover:text-accent" aria-label="Dispensar">
           <X size={16} />
         </button>
       </div>
