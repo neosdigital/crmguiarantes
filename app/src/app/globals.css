@@ -1,36 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  /* Paleta oficial — CRM Guilherme Arantes. Valores fixos: não substituir por aproximações.
-     Toda cor de marca da interface deriva destes cinco tokens. */
-  --brand-oxford: #192338;
-  --brand-space-cadet: #1e2e4f;
-  --brand-yinmn: #31487a;
-  --brand-jordy: #8fb3e2;
-  --brand-lavender: #d9e1f1;
+  /* Paleta oficial — CRM Guilherme Arantes (fundo escuro). Valores fixos: não substituir por
+     aproximações. Toda cor de marca da interface deriva destes três tokens. */
+  --brand-black: #000f0f; /* Rich Black */
+  --brand-azure: #68c7ec; /* Pale Azure */
+  --brand-offwhite: #fffff0; /* Off-white */
 
   /* Papéis semânticos da interface (o que os componentes usam) */
-  --background: var(--brand-oxford);
-  --foreground: var(--brand-lavender);
+  --background: var(--brand-black);
+  --foreground: var(--brand-offwhite);
 
-  --color-sidebar: var(--brand-oxford);
-  --color-surface: var(--brand-space-cadet);
-  /* Superfície elevada (inputs, hover, chips): mistura opaca de Space Cadet com YInMn */
-  --color-surface-2: color-mix(in srgb, var(--brand-yinmn) 45%, var(--brand-space-cadet));
-  --color-border: color-mix(in srgb, var(--brand-jordy) 16%, transparent);
-  --color-border-strong: color-mix(in srgb, var(--brand-jordy) 36%, transparent);
+  --color-sidebar: var(--brand-black);
+  /* Superfícies: Rich Black levemente tingido de Pale Azure (cards, depois inputs/hover/chips) */
+  --color-surface: color-mix(in srgb, var(--brand-azure) 7%, var(--brand-black));
+  --color-surface-2: color-mix(in srgb, var(--brand-azure) 14%, var(--brand-black));
+  --color-border: color-mix(in srgb, var(--brand-azure) 18%, transparent);
+  --color-border-strong: color-mix(in srgb, var(--brand-azure) 40%, transparent);
 
-  /* Ação principal: fundo YInMn com texto Lavender (contraste 6,8:1) */
-  --color-primary: var(--brand-yinmn);
-  --color-primary-hover: color-mix(in srgb, var(--brand-yinmn) 82%, var(--brand-jordy));
-  --color-primary-foreground: var(--brand-lavender);
+  /* Ação principal: fundo Pale Azure com texto Rich Black (contraste ~10:1) */
+  --color-primary: var(--brand-azure);
+  --color-primary-hover: color-mix(in srgb, var(--brand-azure) 85%, var(--brand-offwhite));
+  --color-primary-foreground: var(--brand-black);
 
-  /* Destaque/estado ativo: Jordy (7,3:1 sobre Oxford, 6,2:1 sobre Space Cadet) */
-  --color-accent: var(--brand-jordy);
-  --color-accent-soft: color-mix(in srgb, var(--brand-jordy) 14%, transparent);
+  /* Destaque/estado ativo: Pale Azure (~10:1 sobre Rich Black) */
+  --color-accent: var(--brand-azure);
+  --color-accent-soft: color-mix(in srgb, var(--brand-azure) 14%, transparent);
 
-  --color-text-primary: var(--brand-lavender);
-  --color-text-secondary: color-mix(in srgb, var(--brand-lavender) 70%, transparent);
+  --color-text-primary: var(--brand-offwhite);
+  --color-text-secondary: color-mix(in srgb, var(--brand-offwhite) 68%, transparent);
 
   /* Cores semânticas — não são de marca, comunicam estado */
   --color-danger: #ef4444;
@@ -39,11 +37,9 @@
 }
 
 @theme inline {
-  --color-brand-oxford: var(--brand-oxford);
-  --color-brand-space-cadet: var(--brand-space-cadet);
-  --color-brand-yinmn: var(--brand-yinmn);
-  --color-brand-jordy: var(--brand-jordy);
-  --color-brand-lavender: var(--brand-lavender);
+  --color-brand-black: var(--brand-black);
+  --color-brand-azure: var(--brand-azure);
+  --color-brand-offwhite: var(--brand-offwhite);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -82,8 +78,8 @@ body {
 }
 
 ::selection {
-  background: var(--brand-jordy);
-  color: var(--brand-oxford);
+  background: var(--brand-azure);
+  color: var(--brand-black);
 }
 
 /* Scrollbar discreta, alinhada com a identidade azul */
@@ -95,9 +91,9 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--brand-jordy) 22%, transparent);
+  background: color-mix(in srgb, var(--brand-azure) 22%, transparent);
   border-radius: 999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in srgb, var(--brand-jordy) 38%, transparent);
+  background: color-mix(in srgb, var(--brand-azure) 38%, transparent);
 }

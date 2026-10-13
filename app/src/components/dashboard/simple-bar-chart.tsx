@@ -31,10 +31,10 @@ export function SimpleBarChart({
               <Tooltip
                 contentStyle={{ background: "var(--color-surface)", border: "1px solid var(--color-border-strong)", borderRadius: 12 }}
                 labelStyle={{ color: "var(--foreground)" }}
-                itemStyle={{ color: "var(--brand-jordy)" }}
+                itemStyle={{ color: "var(--brand-azure)" }}
                 cursor={{ fill: "var(--color-accent-soft)" }}
               />
-              <Bar dataKey={dataKey} fill="var(--brand-jordy)" radius={[6, 6, 0, 0]} />
+              <Bar dataKey={dataKey} fill="var(--brand-azure)" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         )}
