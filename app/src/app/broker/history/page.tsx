@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { scopedDb } from "@/lib/tenant-db";
+import { getBrokerIdForUser } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatDistanceToNow } from "date-fns";
@@ -18,18 +19,20 @@ const STATUS_TONE: Record<string, "neutral" | "accent" | "success" | "danger"> =
 
 export default async function BrokerHistoryPage() {
   const session = await auth();
-  if (!session?.user?.brokerId) redirect("/login");
+  if (!session?.user) redirect("/login");
+  const brokerId = await getBrokerIdForUser(session.user.id, session.user.organizationId);
+  if (!brokerId) redirect("/login");
 
   const db = scopedDb(session.user.organizationId);
   const assignments = await db.leadAssignment.findMany({
-    where: { brokerId: session.user.brokerId },
+    where: { brokerId },
     orderBy: { assignedAt: "desc" },
     take: 50,
     include: { lead: { select: { name: true, phone: true, email: true, currentBrokerId: true } } },
   });
   // Página renderizada no servidor: leads que hoje estão com outro corretor já saem com o
   // contato mascarado no HTML (ver lead-privacy.ts).
-  const viewer = { role: session.user.role, brokerId: session.user.brokerId };
+  const viewer = { role: session.user.role, brokerId };
   const rows = assignments.map((a) => ({ ...a, lead: applyLeadContactPrivacy(viewer, a.lead) }));
 
   return (

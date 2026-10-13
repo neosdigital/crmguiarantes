@@ -28,9 +28,8 @@ export default auth((req) => {
     return Response.redirect(new URL(role === "BROKER" ? "/broker/dashboard" : "/dashboard", nextUrl));
   }
 
-  if (isLoggedIn && isBrokerArea && role !== "BROKER") {
-    return Response.redirect(new URL("/dashboard", nextUrl));
-  }
+  // Dono/admin também entram na área do corretor quando têm perfil na roleta — quem não tem
+  // é redirecionado pelo layout de /broker (o middleware roda no Edge, sem acesso ao banco).
 
   if (isLoggedIn && isOwnerArea && role === "BROKER") {
     return Response.redirect(new URL("/broker/dashboard", nextUrl));

@@ -1,15 +1,14 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { requireSession, jsonError, ApiError } from "@/lib/api";
+import { requireBrokerSession, jsonError } from "@/lib/api";
 import { scopedDb } from "@/lib/tenant-db";
 
 export async function GET() {
   try {
-    const session = await requireSession(["BROKER"]);
-    if (!session.user.brokerId) throw new ApiError(403, "Usuário não é um corretor.");
+    const { session, brokerId } = await requireBrokerSession();
     const db = scopedDb(session.user.organizationId);
     const broker = await db.broker.findUnique({
-      where: { id: session.user.brokerId },
+      where: { id: brokerId },
       include: { user: { select: { name: true, email: true } } },
     });
     return NextResponse.json({ broker });
@@ -25,11 +24,10 @@ const patchSchema = z.object({
 
 export async function PATCH(req: Request) {
   try {
-    const session = await requireSession(["BROKER"]);
-    if (!session.user.brokerId) throw new ApiError(403, "Usuário não é um corretor.");
+    const { session, brokerId } = await requireBrokerSession();
     const body = patchSchema.parse(await req.json());
     const db = scopedDb(session.user.organizationId);
-    const broker = await db.broker.update({ where: { id: session.user.brokerId }, data: body });
+    const broker = await db.broker.update({ where: { id: brokerId }, data: body });
     return NextResponse.json({ broker });
   } catch (error) {
     return jsonError(error);

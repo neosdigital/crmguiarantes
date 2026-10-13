@@ -1,17 +1,20 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { scopedDb } from "@/lib/tenant-db";
+import { getBrokerIdForUser } from "@/lib/api";
 import { Card } from "@/components/ui/card";
 import { ProfileSoundToggle } from "@/components/broker/profile-sound-toggle";
 import { PushNotificationSettings } from "@/components/settings/push-notification-settings";
 
 export default async function BrokerProfilePage() {
   const session = await auth();
-  if (!session?.user?.brokerId) redirect("/login");
+  if (!session?.user) redirect("/login");
+  const brokerId = await getBrokerIdForUser(session.user.id, session.user.organizationId);
+  if (!brokerId) redirect("/login");
 
   const db = scopedDb(session.user.organizationId);
   const broker = await db.broker.findUniqueOrThrow({
-    where: { id: session.user.brokerId },
+    where: { id: brokerId },
     include: { user: { select: { name: true, email: true } } },
   });
 
@@ -37,7 +40,7 @@ export default async function BrokerProfilePage() {
 
       <div className="mt-6">
         <h2 className="mb-3 text-lg font-semibold text-foreground">Notificações push</h2>
-        <PushNotificationSettings isAdmin={false} />
+        <PushNotificationSettings isAdmin={session.user.role !== "BROKER"} />
       </div>
     </div>
   );

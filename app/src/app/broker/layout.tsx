@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
-import { LayoutDashboard, History, User, Kanban, Radio } from "lucide-react";
+import { LayoutDashboard, History, User, Kanban, Radio, Shield } from "lucide-react";
 import { auth } from "@/auth";
+import { getBrokerIdForUser } from "@/lib/api";
 import { prisma } from "@crm/db";
 import { Sidebar } from "@/components/layout/sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
@@ -21,17 +22,23 @@ export default async function BrokerLayout({ children }: { children: React.React
   const session = await auth();
   if (!session?.user) redirect("/login");
 
+  const isAdmin = session.user.role !== "BROKER";
+  if (isAdmin && !(await getBrokerIdForUser(session.user.id, session.user.organizationId))) redirect("/dashboard");
+
   const org = await prisma.organization.findUnique({ where: { id: session.user.organizationId } });
+  const items = isAdmin
+    ? [...ITEMS, { href: "/dashboard", label: "Painel Admin", icon: <Shield size={ICON_SIZE} /> }]
+    : ITEMS;
 
   return (
     <div className="flex min-h-screen flex-col bg-background md:flex-row">
       <MobileNav
-        items={ITEMS}
+        items={items}
         orgName={org?.name ?? ""}
         userName={session.user.name ?? ""}
         signOutSlot={<SignOutButton />}
       />
-      <Sidebar items={ITEMS} orgName={org?.name ?? ""} userName={session.user.name ?? ""} />
+      <Sidebar items={items} orgName={org?.name ?? ""} userName={session.user.name ?? ""} />
       <main className="flex-1 overflow-y-auto">{children}</main>
       <BrokerAlertListener />
     </div>

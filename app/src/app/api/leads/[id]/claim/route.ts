@@ -1,20 +1,16 @@
 import { NextResponse } from "next/server";
-import { requireSession, jsonError, ApiError } from "@/lib/api";
+import { requireBrokerSession, jsonError } from "@/lib/api";
 import { claimLead, ClaimError } from "@crm/db";
 
 export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await requireSession(["BROKER"]);
+    const { session, brokerId } = await requireBrokerSession();
     const { id } = await params;
-
-    if (!session.user.brokerId) {
-      throw new ApiError(403, "Apenas corretores podem assumir leads.");
-    }
 
     const assignment = await claimLead({
       organizationId: session.user.organizationId,
       leadId: id,
-      brokerId: session.user.brokerId,
+      brokerId,
     });
 
     return NextResponse.json({ assignment });

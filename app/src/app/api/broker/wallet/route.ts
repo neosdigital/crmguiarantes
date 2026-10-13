@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireSession, jsonError, ApiError } from "@/lib/api";
+import { requireBrokerSession, jsonError } from "@/lib/api";
 import { scopedDb } from "@/lib/tenant-db";
 
 /**
@@ -9,14 +9,13 @@ import { scopedDb } from "@/lib/tenant-db";
  */
 export async function GET() {
   try {
-    const session = await requireSession(["BROKER"]);
-    if (!session.user.brokerId) throw new ApiError(403, "Usuário não é um corretor.");
+    const { session, brokerId } = await requireBrokerSession();
 
     const db = scopedDb(session.user.organizationId);
 
     const leads = await db.lead.findMany({
       where: {
-        currentBrokerId: session.user.brokerId,
+        currentBrokerId: brokerId,
         status: { in: ["IN_PROGRESS", "QUALIFIED", "SCHEDULED", "CONVERTED", "LOST", "REMARKETING"] },
       },
       orderBy: { updatedAt: "desc" },

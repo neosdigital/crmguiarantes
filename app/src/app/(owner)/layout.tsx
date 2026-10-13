@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
-import { LayoutDashboard, Users2, RefreshCw, BarChart3, Plug, Settings, Radio, ListChecks, Bell, Kanban } from "lucide-react";
+import { LayoutDashboard, Users2, RefreshCw, BarChart3, Plug, Settings, Radio, ListChecks, Bell, Kanban, UserCheck } from "lucide-react";
 import { auth } from "@/auth";
+import { getBrokerIdForUser } from "@/lib/api";
 import { prisma } from "@crm/db";
 import { Sidebar } from "@/components/layout/sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
@@ -27,16 +28,21 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
   if (!session?.user) redirect("/login");
 
   const org = await prisma.organization.findUnique({ where: { id: session.user.organizationId } });
+  // Dono/admin que também está na roleta ganha o atalho para a área de corretor (assumir leads).
+  const isInRotation = Boolean(await getBrokerIdForUser(session.user.id, session.user.organizationId));
+  const items = isInRotation
+    ? [...ITEMS, { href: "/broker/dashboard", label: "Área do Corretor", icon: <UserCheck size={ICON_SIZE} /> }]
+    : ITEMS;
 
   return (
     <div className="flex min-h-screen flex-col bg-background md:flex-row">
       <MobileNav
-        items={ITEMS}
+        items={items}
         orgName={org?.name ?? ""}
         userName={session.user.name ?? ""}
         signOutSlot={<SignOutButton />}
       />
-      <Sidebar items={ITEMS} orgName={org?.name ?? ""} userName={session.user.name ?? ""} />
+      <Sidebar items={items} orgName={org?.name ?? ""} userName={session.user.name ?? ""} />
       <main className="flex-1 overflow-y-auto">
         <NotificationHealthBanner />
         {children}

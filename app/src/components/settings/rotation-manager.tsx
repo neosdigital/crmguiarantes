@@ -17,7 +17,7 @@ type Broker = {
   status: "ACTIVE" | "PAUSED" | "INACTIVE";
   isInRotation: boolean;
   rotationPosition: number;
-  user: { email: string; name: string };
+  user: { email: string; name: string; role: "OWNER" | "ADMIN" | "BROKER" };
 };
 
 function BrokerPhoneEditor({ broker, onSaved }: { broker: Broker; onSaved: () => void }) {
@@ -80,7 +80,7 @@ export function RotationManager() {
   const { data, mutate, isLoading } = useSWR<{ brokers: Broker[] }>("/api/brokers", fetcher);
   const [showAdd, setShowAdd] = useState(false);
   const [creating, setCreating] = useState(false);
-  const [createdInfo, setCreatedInfo] = useState<{ email: string; tempPassword: string } | null>(null);
+  const [createdInfo, setCreatedInfo] = useState<{ email: string; tempPassword: string | null } | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
 
   async function toggleActive(broker: Broker) {
@@ -102,10 +102,11 @@ export function RotationManager() {
     setCreating(true);
     setFormError(null);
     try {
-      const result = await poster<{ broker: Broker; tempPassword: string }>("/api/brokers", {
+      const result = await poster<{ broker: Broker; tempPassword: string | null }>("/api/brokers", {
         name: formData.get("name"),
         email: formData.get("email"),
         phone: formData.get("phone") || undefined,
+        isAdmin: formData.get("isAdmin") === "on",
       });
       setCreatedInfo({ email: result.broker.user?.email ?? String(formData.get("email")), tempPassword: result.tempPassword });
       mutate();
@@ -144,6 +145,13 @@ export function RotationManager() {
             <Input name="name" placeholder="Nome completo" required />
             <Input name="email" type="email" placeholder="Email" required />
             <Input name="phone" placeholder="Telefone (opcional)" />
+            <label className="flex items-center gap-2 text-sm text-text-secondary sm:col-span-3">
+              <input type="checkbox" name="isAdmin" className="h-4 w-4 accent-[color:var(--color-accent)]" />
+              Também administrador (acessa o painel do dono)
+            </label>
+            <p className="text-xs text-text-secondary sm:col-span-3">
+              Para colocar na roleta um dono/administrador que já tem conta, use o email dele.
+            </p>
             <Button type="submit" disabled={creating} className="sm:col-span-3">
               {creating ? "Criando..." : "Criar corretor"}
             </Button>
@@ -151,8 +159,16 @@ export function RotationManager() {
           {formError && <p className="mt-2 text-sm text-danger">{formError}</p>}
           {createdInfo && (
             <p className="mt-3 rounded-lg bg-accent-soft px-3 py-2 text-sm text-accent">
-              Corretor criado. Senha temporária para <strong>{createdInfo.email}</strong>:{" "}
-              <code>{createdInfo.tempPassword}</code> — compartilhe com segurança.
+              {createdInfo.tempPassword ? (
+                <>
+                  Corretor criado. Senha temporária para <strong>{createdInfo.email}</strong>:{" "}
+                  <code>{createdInfo.tempPassword}</code> — compartilhe com segurança.
+                </>
+              ) : (
+                <>
+                  <strong>{createdInfo.email}</strong> entrou na roleta e continua com o mesmo login.
+                </>
+              )}
             </p>
           )}
         </Card>
@@ -176,6 +192,7 @@ export function RotationManager() {
               </div>
 
               <div className="flex flex-wrap items-center gap-3 pl-10 sm:pl-0">
+                {b.user.role !== "BROKER" && <Badge tone="accent">Admin</Badge>}
                 <Badge tone={b.status === "ACTIVE" && b.isInRotation ? "success" : "neutral"}>
                   {b.status === "ACTIVE" && b.isInRotation ? "Ativo" : brokerStatusLabel(b.status)}
                 </Badge>
