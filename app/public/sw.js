@@ -32,7 +32,9 @@ self.addEventListener("push", (event) => {
     // Com o app fechado, o som é o da notificação do sistema (celular/computador). Com som
     // ativado, pede alerta sonoro + vibração; o volume final depende das configurações do aparelho.
     silent,
-    vibrate: silent ? undefined : [300, 120, 300, 120, 300],
+    vibrate: silent ? undefined : [600, 150, 600, 150, 600, 150, 1000],
+    // Fica na tela até o corretor tocar nela (onde o sistema suporta, ex.: Chrome no PC/Android).
+    requireInteraction: !silent,
   };
 
   event.waitUntil(

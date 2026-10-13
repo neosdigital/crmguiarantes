@@ -34,9 +34,19 @@ export function isAudioReady(): boolean {
 // O mesmo lead pode disparar o alerta por dois caminhos quase juntos (polling do dashboard e
 // mensagem do push via service worker) — evita tocar duas vezes seguidas.
 let lastPlayedAt = 0;
-const MIN_INTERVAL_MS = 3000;
+const MIN_INTERVAL_MS = 4000;
 
-/** Toca um alerta sonoro curto de dois tons (sem depender de nenhum arquivo de áudio externo). */
+// Alarme de lead novo: 3 rajadas de 4 bipes agudos alternados (B5/E6), ~2s no total.
+// Onda quadrada + volume alto passando por um compressor = som forte e marcante sem distorcer.
+const BURSTS = 3;
+const BEEPS_PER_BURST = 4;
+const BEEP_SECONDS = 0.09;
+const BEEP_GAP_SECONDS = 0.03;
+const BURST_GAP_SECONDS = 0.22;
+const TONES = [988, 1319];
+const PEAK_GAIN = 0.9;
+
+/** Toca o alarme de lead novo (gerado via Web Audio, sem depender de arquivo de áudio externo). */
 export function playLeadAlertSound() {
   const nowMs = Date.now();
   if (nowMs - lastPlayedAt < MIN_INTERVAL_MS) return;
@@ -45,23 +55,32 @@ export function playLeadAlertSound() {
     const Ctx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
     audioCtx = audioCtx ?? new Ctx();
     if (audioCtx.state === "suspended") audioCtx.resume();
+    const ctx = audioCtx;
 
-    const now = audioCtx.currentTime;
-    const tones = [880, 1175];
-    tones.forEach((freq, i) => {
-      const osc = audioCtx!.createOscillator();
-      const gain = audioCtx!.createGain();
-      osc.type = "sine";
-      osc.frequency.value = freq;
-      const start = now + i * 0.16;
-      gain.gain.setValueAtTime(0, start);
-      gain.gain.linearRampToValueAtTime(0.22, start + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, start + 0.28);
-      osc.connect(gain);
-      gain.connect(audioCtx!.destination);
-      osc.start(start);
-      osc.stop(start + 0.3);
-    });
+    const compressor = ctx.createDynamicsCompressor();
+    compressor.threshold.value = -12;
+    compressor.ratio.value = 6;
+    compressor.connect(ctx.destination);
+
+    let start = ctx.currentTime + 0.02;
+    for (let burst = 0; burst < BURSTS; burst++) {
+      for (let beep = 0; beep < BEEPS_PER_BURST; beep++) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "square";
+        osc.frequency.value = TONES[beep % TONES.length];
+        gain.gain.setValueAtTime(0, start);
+        gain.gain.linearRampToValueAtTime(PEAK_GAIN, start + 0.005);
+        gain.gain.setValueAtTime(PEAK_GAIN, start + BEEP_SECONDS - 0.01);
+        gain.gain.linearRampToValueAtTime(0, start + BEEP_SECONDS);
+        osc.connect(gain);
+        gain.connect(compressor);
+        osc.start(start);
+        osc.stop(start + BEEP_SECONDS);
+        start += BEEP_SECONDS + BEEP_GAP_SECONDS;
+      }
+      start += BURST_GAP_SECONDS;
+    }
   } catch {
     // Silencioso — não deve quebrar a UI se o áudio falhar.
   }
