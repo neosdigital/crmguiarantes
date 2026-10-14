@@ -95,11 +95,7 @@ export default function PrivacyPolicyPage() {
           <h2 className="mb-2 text-lg font-medium">8. Contato</h2>
           <p>
             Em caso de dúvidas sobre esta política ou sobre o tratamento dos seus dados,
-            entre em contato:{" "}
-            <a href="mailto:contato@prosperaimoveis.com.br" className="text-accent underline">
-              contato@prosperaimoveis.com.br
-            </a>
-            .
+            entre em contato com Guilherme Arantes Corretor pelos canais oficiais de atendimento.
           </p>
           <p className="mt-2 text-xs text-text-secondary">
             (Substituir pelo e-mail/telefone de contato real da imobiliária antes de publicar.)

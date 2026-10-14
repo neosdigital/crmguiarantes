@@ -1,6 +1,6 @@
 import { sendSystemAlert, WHATSAPP_TEMPLATES } from "@crm/db";
 
-const url = process.env.HEALTHCHECK_URL || "https://crmprospera.vercel.app";
+const url = process.env.HEALTHCHECK_URL;
 const alertPhone = process.env.HEALTHCHECK_ALERT_PHONE;
 const failureThreshold = Number(process.env.HEALTHCHECK_FAILURE_THRESHOLD ?? 3);
 const timeoutMs = 10_000;
@@ -27,7 +27,7 @@ function formatDowntime(ms: number): string {
  * pro /login, até um 404) significa que a aplicação respondeu, então está "no ar" —
  * esse healthcheck não é um teste de corretude da aplicação, só de disponibilidade.
  */
-async function checkOnce(): Promise<{ ok: boolean; reason: string }> {
+async function checkOnce(url: string): Promise<{ ok: boolean; reason: string }> {
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(timeoutMs) });
     if (res.status === 402) return { ok: false, reason: "Pagamento pendente na Vercel (402 Deployment Disabled)" };
@@ -48,9 +48,9 @@ let downSince: Date | null = null;
  * manda um WhatsApp por checagem, senão vira spam a cada minuto enquanto durar a queda.
  */
 export async function runHealthcheck() {
-  if (!alertPhone) return;
+  if (!alertPhone || !url) return;
 
-  const { ok, reason } = await checkOnce();
+  const { ok, reason } = await checkOnce(url);
 
   if (!ok) {
     consecutiveFailures += 1;

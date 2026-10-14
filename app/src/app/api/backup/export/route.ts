@@ -24,7 +24,7 @@ export async function GET() {
     return new Response(new Uint8Array(gz), {
       headers: {
         "Content-Type": "application/gzip",
-        "Content-Disposition": `attachment; filename="crm-prospera-${org.slug}-backup-${stamp}.json.gz"`,
+        "Content-Disposition": `attachment; filename="crm-guiarantes-${org.slug}-backup-${stamp}.json.gz"`,
         "Cache-Control": "no-store",
       },
     });

@@ -1,4 +1,4 @@
-# CRM Prospera
+# CRM Guilherme Arantes
 
 CRM multi-tenant para imobiliárias com distribuição automática de leads do Meta Lead Ads:
 webhook → roleta em round-robin entre os corretores (1º lead novo vai pro corretor #1, o
@@ -72,7 +72,7 @@ npm run db:migrate   # cria as tabelas (prisma migrate dev)
 npm run db:seed       # popula um ambiente de demonstração (ver contas abaixo)
 ```
 
-O seed é isolado (`slug: prospera`) e nunca deve ser usado em produção — ver seção
+O seed é isolado (`slug: guilherme-arantes`) e nunca deve ser usado em produção — ver seção
 "Seed vs. produção".
 
 ### 4. Rodar
@@ -87,25 +87,10 @@ expiram/transferem sozinhos — para produção ele **precisa** estar sempre ati
 
 ### Contas (seed)
 
-As senhas dos corretores são geradas aleatoriamente pelo seed e impressas no terminal a cada
-execução (`npm run db:seed`) — anote a saída do comando. Valores atuais:
-
-| Papel | Email | Senha |
-|---|---|---|
-| Dono (OWNER) | adm@prospera.com | metodoneosprospera2026 |
-| Corretor #1 | eduardo@prospera.com | bCGPtopWA5 |
-| Corretor #2 | gisele@prospera.com | 9g3czG86Uj |
-| Corretor #3 | joao@prospera.com | ovdPD4kr6t |
-| Corretor #4 | maurilo@prospera.com | vwREywYudJ |
-| Corretor #5 | mara@prospera.com | btPuDeazXB |
-| Corretor #6 | tassi@prospera.com | LyHX53sLpj |
-
-**Importante:** essas senhas estão em texto puro em `packages/db/seed.ts` e agora no histórico do
-git — são credenciais reais de uso, não só dados de demonstração. Troque-as após o primeiro
-login (ainda não há tela de "alterar senha" — pode ser feito gerando um novo hash com bcrypt e
-atualizando `password_hash` diretamente, ou recriando o usuário) antes de expor este ambiente
-publicamente, e evite dar push deste repositório para um remoto público sem antes trocar a
-senha do OWNER.
+O seed cria o dono `guilherme@adm.com` e os corretores `jose.roberto@guilhermearantes.com` e
+`guilherme@guilhermearantes.com`. Nenhuma senha fica no código: cada execução de
+`npm run db:seed` gera senhas novas e as imprime no terminal — anote a saída do comando.
+Para fixar a senha do dono, defina `SEED_OWNER_PASSWORD` antes de rodar.
 
 ## Testes
 
@@ -204,7 +189,7 @@ um corretor que já tinha recebido esse mesmo lead antes — nesse caso é um te
    pré-aprovados. Em **WhatsApp Manager → Modelos de mensagem**, crie os três abaixo (categoria
    **Utilidade**, idioma **Português (BR)**) — os textos exatos também aparecem em
    `/settings/integrations/whatsapp`:
-   - `novo_lead_atribuido`: "Olá {{1}}! Você recebeu um novo lead no CRM Próspera: {{2}},
+   - `novo_lead_atribuido`: "Olá {{1}}! Você recebeu um novo lead no CRM Guilherme Arantes: {{2}},
      telefone {{3}}. Você tem {{4}} minutos para entrar em contato antes que ele passe para o
      próximo corretor."
    - `lead_expirado_corretor`: "Atenção {{1}}: o tempo para atender o lead {{2}} esgotou e ele
@@ -236,14 +221,15 @@ celular (Android e iPhone via PWA instalado) e PC.
 
 - Tabela `push_subscriptions` (`packages/db/prisma/schema.prisma`) — um usuário pode ter várias
   inscrições (uma por navegador/dispositivo). Migration: `add_push_subscriptions`.
-- `app/src/lib/push-server.ts` — `notifyNewLead(lead)` (chamada nos dois pontos reais de criação
-  de lead: `api/webhooks/meta` e `api/leads`, via `after()` do Next.js — não atrasa nem quebra a
-  resposta) e `sendTestPush(userId)`. Limpa sozinho inscrições que voltarem 404/410 (dispositivo
+- `packages/db/src/push.ts` (reexportado em `app/src/lib/push-server.ts`) — `notifyBrokerTurnPush`
+  (aviso "na sua vez", só para quem está na vez da roleta — corretor ou dono/admin na roleta;
+  não existe aviso geral de lead novo, para duas pessoas não ligarem para o mesmo lead) e
+  `sendTestPush(userId)`. Limpa sozinho inscrições que voltarem 404/410 (dispositivo
   desinstalou/expirou); qualquer outro erro só fica registrado em `lastError`, nunca derruba o
   envio dos demais.
 - `app/public/sw.js` (Service Worker) + `app/public/manifest.json` + ícones (`icon-192.png`,
-  `icon-512.png`, `icon-512-maskable.png`, `apple-touch-icon.png`, gerados a partir do símbolo
-  do logo da Próspera).
+  `icon-512.png`, `icon-512-maskable.png`, `apple-touch-icon.png`, gerados a partir do logo
+  Guilherme Arantes).
 - Rotas: `GET /api/push/vapid-public-key` (pública), `POST /api/push/subscribe`,
   `POST /api/push/unsubscribe`, `GET /api/push/subscriptions`, `DELETE /api/push/subscriptions/:id`,
   `POST /api/push/test` (só OWNER/ADMIN).
@@ -288,7 +274,7 @@ push, só a Meta/WhatsApp.
   ou um túnel HTTPS (ngrok, Tailscale Funnel) em vez disso.
 - **Limitação conhecida**: na União Europeia, por causa do DMA, a Apple mudou o comportamento de
   "Adicionar à Tela de Início" e Web Push pode não funcionar mesmo instalado. Não é relevante
-  pra operação da Próspera (Brasil), mas fica registrado caso o público mude no futuro.
+  pra operação no Brasil, mas fica registrado caso o público mude no futuro.
 
 ## Healthcheck do site (avisa por WhatsApp se o CRM cair)
 
@@ -313,19 +299,19 @@ Vercel cair ou for suspensa, algo hospedado nela não conseguiria avisar ningué
 
 1. **Aprovar dois novos templates** em **WhatsApp Manager → Modelos de mensagem** (categoria
    **Utilidade**, idioma **Português (BR)**), igual aos templates de lead:
-   - `crm_sistema_fora_do_ar`: "⚠️ Alerta CRM Próspera: o sistema está fora do ar desde {{1}}.
+   - `crm_sistema_fora_do_ar`: "⚠️ Alerta CRM Guilherme Arantes: o sistema está fora do ar desde {{1}}.
      Motivo detectado: {{2}}."
-   - `crm_sistema_recuperado`: "✅ CRM Próspera voltou ao normal às {{1}}, após {{2}} fora do ar."
+   - `crm_sistema_recuperado`: "✅ CRM Guilherme Arantes voltou ao normal às {{1}}, após {{2}} fora do ar."
    A aprovação pode levar de minutos a alguns dias; enquanto pendente, o envio do alerta falha
    silenciosamente (só fica no log do worker), sem derrubar o healthcheck em si.
 2. No ambiente do **worker** (Railway), adicione:
    ```
-   HEALTHCHECK_URL="https://crmprospera.vercel.app"
+   HEALTHCHECK_URL="https://SEU-DOMINIO"
    HEALTHCHECK_INTERVAL_SECONDS=60
    HEALTHCHECK_FAILURE_THRESHOLD=3
-   HEALTHCHECK_ALERT_PHONE="+5547997580595"
+   HEALTHCHECK_ALERT_PHONE="+55DDDNUMERO"
    ```
-   Deixe `HEALTHCHECK_ALERT_PHONE` vazio para desativar o healthcheck sem remover o código.
+   Deixe `HEALTHCHECK_URL` ou `HEALTHCHECK_ALERT_PHONE` vazio para desativar o healthcheck sem remover o código.
 
 ## Segurança e RBAC
 
@@ -360,16 +346,16 @@ sistema continua funcionando mesmo com o navegador fechado").
 
 ## Backup diário
 
-`npm run backup` (na raiz) gera um arquivo `crm-prospera-backup-AAAA-MM-DD_HH-mm.json.gz` com
+`npm run backup` (na raiz) gera um arquivo `crm-guiarantes-backup-AAAA-MM-DD_HH-mm.json.gz` com
 **todas as tabelas e registros** do banco (as tabelas são descobertas pelo catálogo do Postgres,
 então tabelas novas entram sozinhas). O script só lê: roda numa transação `READ ONLY` +
 `REPEATABLE READ` (foto consistente) e, depois de gravar, relê o arquivo e confere a contagem de
 cada tabela antes de dar o backup como válido.
 
-- **Destinos**: `Documentos\Backups CRM Prospera` e `G:\Meu Drive\Backups CRM Prospera` (o Google
+- **Destinos**: `Documentos\Backups CRM Guilherme Arantes` e `G:\Meu Drive\Backups CRM Guilherme Arantes` (o Google
   Drive para computador sincroniza sozinho com a nuvem). Outros destinos: variável
   `BACKUP_DIRS` (separados por `;`).
-- **Automático**: tarefa do Agendador do Windows **"CRM Prospera - Backup diario"**, todo dia às
+- **Automático**: tarefa do Agendador do Windows **"CRM Guilherme Arantes - Backup diario"**, todo dia às
   23:30 (`packages/db/scripts/backup-diario.cmd`). Se o computador estiver desligado nesse
   horário, roda assim que ele ligar.
 - **Conferência**: cada pasta tem `ULTIMO-BACKUP.txt` (data, tamanho, contagens) e `backup.log`
@@ -397,7 +383,7 @@ mesmos pontos onde hoje gravamos `audit_logs` (assign/claim/expire).
 
 ## Seed vs. produção
 
-`packages/db/seed.ts` cria a organização `prospera` com dados fictícios — nunca é
+`packages/db/seed.ts` cria a organização `guilherme-arantes` com dados fictícios — nunca é
 chamado pelo fluxo principal (webhook, API de criação de corretor, etc.) e é seguro rodar em
 desenvolvimento repetidamente (idempotente). Não rode `npm run db:seed` contra um banco de
 produção com dados reais.

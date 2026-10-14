@@ -141,6 +141,6 @@ describe("Backup em Configurações — importar somando, sem duplicar e sem sob
 
   it("arquivo inválido é recusado", () => {
     expect(validateBackupFile({ foo: 1 })).not.toBeNull();
-    expect(validateBackupFile({ format: "crm-prospera-backup", formatVersion: 99, tables: {} })).not.toBeNull();
+    expect(validateBackupFile({ format: "crm-guiarantes-backup", formatVersion: 99, tables: {} })).not.toBeNull();
   });
 });

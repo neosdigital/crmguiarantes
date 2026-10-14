@@ -75,7 +75,7 @@ log("worker_started", {
   intervalSeconds,
   cronExpression,
   healthcheckIntervalSeconds,
-  healthcheckEnabled: Boolean(process.env.HEALTHCHECK_ALERT_PHONE),
+  healthcheckEnabled: Boolean(process.env.HEALTHCHECK_ALERT_PHONE && process.env.HEALTHCHECK_URL),
   pushConfigured: isPushConfigured(),
   commit: process.env.RAILWAY_GIT_COMMIT_SHA?.slice(0, 7) ?? null,
 });

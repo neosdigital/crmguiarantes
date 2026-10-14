@@ -54,7 +54,7 @@ async function main() {
   }
 
   const backup = JSON.parse(zlib.gunzipSync(fs.readFileSync(file)).toString("utf8")) as Backup;
-  if (backup.format !== "crm-prospera-backup") throw new Error("Arquivo não é um backup do CRM Próspera.");
+  if (backup.format !== "crm-guiarantes-backup") throw new Error("Arquivo não é um backup do CRM Guilherme Arantes.");
   console.log(`Backup de ${backup.createdAt} — ${Object.keys(backup.tables).length} tabelas`);
 
   const prisma = new PrismaClient({ datasources: { db: { url: target } } });

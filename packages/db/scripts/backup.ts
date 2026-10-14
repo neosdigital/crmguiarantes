@@ -10,8 +10,8 @@
  * - A limpeza de backups antigos só apaga arquivos com o nome exato deste backup.
  *
  * Uso:  npm run backup   (na raiz do projeto)
- * Destinos: BACKUP_DIRS (separados por ";") ou, por padrão, Documentos\Backups CRM Prospera
- * e G:\Meu Drive\Backups CRM Prospera (Google Drive para computador sincroniza sozinho).
+ * Destinos: BACKUP_DIRS (separados por ";") ou, por padrão, Documentos\Backups CRM Guilherme Arantes
+ * e G:\Meu Drive\Backups CRM Guilherme Arantes (Google Drive para computador sincroniza sozinho).
  * Restaurar: ver scripts/restore-backup.ts.
  */
 import { PrismaClient, Prisma } from "@prisma/client";
@@ -21,9 +21,9 @@ import path from "path";
 import zlib from "zlib";
 import crypto from "crypto";
 
-const FORMAT = "crm-prospera-backup";
+const FORMAT = "crm-guiarantes-backup";
 const FORMAT_VERSION = 1;
-const FILE_PATTERN = /^crm-prospera-backup-\d{4}-\d{2}-\d{2}_\d{2}-\d{2}\.json\.gz$/;
+const FILE_PATTERN = /^crm-guiarantes-backup-\d{4}-\d{2}-\d{2}_\d{2}-\d{2}\.json\.gz$/;
 const KEEP_DAYS = Number(process.env.BACKUP_KEEP_DAYS ?? 90);
 const MIN_KEEP_FILES = 30;
 
@@ -43,10 +43,10 @@ function loadEnvFile(file: string) {
 
 function defaultDirs(): string[] {
   if (process.env.BACKUP_DIRS) return process.env.BACKUP_DIRS.split(";").map((d) => d.trim()).filter(Boolean);
-  const dirs = [path.join(os.homedir(), "Documents", "Backups CRM Prospera")];
+  const dirs = [path.join(os.homedir(), "Documents", "Backups CRM Guilherme Arantes")];
   for (const drive of ["G:\\Meu Drive", "G:\\My Drive"]) {
     if (fs.existsSync(drive)) {
-      dirs.push(path.join(drive, "Backups CRM Prospera"));
+      dirs.push(path.join(drive, "Backups CRM Guilherme Arantes"));
       break;
     }
   }
@@ -131,7 +131,7 @@ async function main() {
   };
 
   const startedAt = new Date();
-  const fileName = `crm-prospera-backup-${brasiliaStamp(startedAt)}.json.gz`;
+  const fileName = `crm-guiarantes-backup-${brasiliaStamp(startedAt)}.json.gz`;
   log(`iniciando backup -> ${fileName}`);
 
   const prisma = new PrismaClient({ datasources: { db: { url } } });

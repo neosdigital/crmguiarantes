@@ -18,7 +18,7 @@ import type { PrismaClient } from "@prisma/client";
  * do CRM passam a ser exportadas/importadas sem precisar mexer aqui.
  */
 
-export const BACKUP_FORMAT = "crm-prospera-backup";
+export const BACKUP_FORMAT = "crm-guiarantes-backup";
 export const BACKUP_FORMAT_VERSION = 1;
 
 type Tx = Prisma.TransactionClient;
@@ -167,7 +167,7 @@ export async function exportOrganizationBackup(prisma: PrismaClient, organizatio
 /** Confere se o conteúdo é mesmo um backup do CRM (mensagem de erro em português ou null). */
 export function validateBackupFile(data: unknown): string | null {
   const b = data as Partial<BackupFile> | null;
-  if (!b || typeof b !== "object" || b.format !== BACKUP_FORMAT) return "O arquivo não é um backup do CRM Próspera.";
+  if (!b || typeof b !== "object" || b.format !== BACKUP_FORMAT) return "O arquivo não é um backup do CRM Guilherme Arantes.";
   if (typeof b.formatVersion !== "number" || b.formatVersion > BACKUP_FORMAT_VERSION) {
     return "Este backup foi gerado por uma versão mais nova do CRM.";
   }

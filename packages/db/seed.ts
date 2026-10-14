@@ -1,20 +1,26 @@
 import { PrismaClient, Role, LeadStatus, AssignmentStatus, AuditAction } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 const prisma = new PrismaClient();
 
-const ORG_SLUG = "prospera";
+const ORG_SLUG = "guilherme-arantes";
 
-const OWNER = { name: "Administrador", email: "adm@prospera.com", password: "metodoneosprospera2026" };
+// Nenhuma senha fica no código: cada execução gera senhas novas e as imprime no terminal.
+// Para fixar a do dono, defina SEED_OWNER_PASSWORD no ambiente.
+function generatePassword() {
+  return crypto.randomBytes(6).toString("base64url");
+}
 
-// Senhas geradas aleatoriamente para o seed — trocar depois do primeiro login em produção.
+const OWNER = {
+  name: "Administrador",
+  email: "guilherme@adm.com",
+  password: process.env.SEED_OWNER_PASSWORD || generatePassword(),
+};
+
 const BROKERS = [
-  { name: "Eduardo", email: "eduardo@prospera.com", password: "bCGPtopWA5" },
-  { name: "Gisele", email: "gisele@prospera.com", password: "9g3czG86Uj" },
-  { name: "João", email: "joao@prospera.com", password: "ovdPD4kr6t" },
-  { name: "Maurilo", email: "maurilo@prospera.com", password: "vwREywYudJ" },
-  { name: "Mara Z", email: "mara@prospera.com", password: "btPuDeazXB" },
-  { name: "Tassi", email: "tassi@prospera.com", password: "LyHX53sLpj" },
+  { name: "José Roberto", email: "jose.roberto@guilhermearantes.com", password: generatePassword() },
+  { name: "Guilherme Arantes", email: "guilherme@guilhermearantes.com", password: generatePassword() },
 ];
 
 const CAMPAIGNS = [
@@ -33,7 +39,7 @@ function randomPhone() {
 }
 
 async function main() {
-  console.log("Seeding: Próspera (ambiente de desenvolvimento)");
+  console.log("Seeding: Guilherme Arantes (ambiente de desenvolvimento)");
 
   // Reexecução idempotente: remove por completo a organização de seed anterior (cascata)
   // antes de recriar, para não deixar contas antigas órfãs quando os emails mudam.
@@ -44,7 +50,7 @@ async function main() {
 
   const org = await prisma.organization.create({
     data: {
-      name: "Próspera Relacionamentos & Imóveis",
+      name: "Guilherme Arantes Corretor",
       slug: ORG_SLUG,
       responseTimeoutMinutes: 5,
     },
@@ -85,7 +91,7 @@ async function main() {
       data: {
         organizationId: org.id,
         userId: user.id,
-        displayName: b.name,
+        displayName: b.name.split(" ")[0],
         phone: `+${randomPhone()}`,
         rotationPosition: i + 1,
         isInRotation: true,

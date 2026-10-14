@@ -96,7 +96,7 @@ export async function getNotificationHealth(organizationId: string, now = new Da
         severity: "critical",
         title: `${missing} passagem(ns) da roleta sem aviso para o corretor nas últimas 2h`,
         detail:
-          "O lead passou para o próximo corretor, mas nenhum aviso foi disparado. Normalmente é o worker do Railway rodando uma versão antiga: faça um novo deploy dele (Railway → crmprospera-worker → Deploy).",
+          "O lead passou para o próximo corretor, mas nenhum aviso foi disparado. Normalmente é o worker do Railway rodando uma versão antiga: faça um novo deploy dele (Railway → serviço do worker → Deploy).",
       });
     }
   }

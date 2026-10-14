@@ -18,7 +18,7 @@ export const WHATSAPP_TEMPLATES = {
     name: "novo_lead_atribuido",
     category: "UTILITY",
     language: TEMPLATE_LANGUAGE,
-    body: "Olá {{1}}! Você recebeu um novo lead no CRM Próspera: {{2}}, telefone {{3}}. Você tem {{4}} minutos para entrar em contato antes que ele passe para o próximo corretor.",
+    body: "Olá {{1}}! Você recebeu um novo lead no CRM Guilherme Arantes: {{2}}, telefone {{3}}. Você tem {{4}} minutos para entrar em contato antes que ele passe para o próximo corretor.",
   },
   EXPIRED: {
     name: "lead_expirado_corretor",
@@ -36,13 +36,13 @@ export const WHATSAPP_TEMPLATES = {
     name: "crm_sistema_fora_do_ar",
     category: "UTILITY",
     language: TEMPLATE_LANGUAGE,
-    body: "⚠️ Alerta CRM Próspera: o sistema está fora do ar desde {{1}}. Motivo detectado: {{2}}.",
+    body: "⚠️ Alerta CRM Guilherme Arantes: o sistema está fora do ar desde {{1}}. Motivo detectado: {{2}}.",
   },
   SYSTEM_RECOVERED: {
     name: "crm_sistema_recuperado",
     category: "UTILITY",
     language: TEMPLATE_LANGUAGE,
-    body: "✅ CRM Próspera voltou ao normal às {{1}}, após {{2}} fora do ar.",
+    body: "✅ CRM Guilherme Arantes voltou ao normal às {{1}}, após {{2}} fora do ar.",
   },
 } as const;
 
@@ -267,7 +267,7 @@ export async function notifyBrokerExpired(params: {
  * Alerta de infraestrutura (ex.: site fora do ar por suspensão de billing na Vercel),
  * usado pelo healthcheck do worker — não é vinculado a lead/corretor, por isso não
  * segue o padrão `sendBestEffort`: usa a integração de WhatsApp ativa de qualquer
- * organização (hoje só existe a Próspera em produção) apenas como "linha de envio",
+ * organização (hoje só existe uma em produção) apenas como "linha de envio",
  * e PROPAGA o erro em vez de engolir — quem chama precisa saber se o alerta falhou.
  */
 export async function sendSystemAlert(params: { to: string; templateName: string; bodyParams: string[] }) {
