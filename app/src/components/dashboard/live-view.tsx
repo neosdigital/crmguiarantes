@@ -6,7 +6,6 @@ import { Phone, Mail, Megaphone, Users } from "lucide-react";
 import { fetcher } from "@/lib/fetcher";
 import { Card, CardLabel } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useNewItemAlert, showLeadNotification } from "@/hooks/use-new-item-alert";
 import { PushNotificationBanner } from "@/components/notifications/push-notification-banner";
 import { leadStatusLabel } from "@/lib/labels";
 import { SendTestLeadButton } from "@/components/leads/send-test-lead-button";
@@ -203,9 +202,10 @@ function LiveCard({ lead, offsetMs }: { lead: LiveLead; offsetMs: number }) {
 }
 
 /**
- * `mode="broker"`: versão do corretor (/broker/live) — só leitura, sem o botão de lead
- * fictício e SEM som/notificação de navegador para leads novos: o corretor só é avisado
- * quando o lead cai na vez dele (push da roleta), nunca por lead que está com outro.
+ * Painel ao vivo, sem som/notificação de navegador para leads novos em nenhum modo: ninguém
+ * recebe aviso geral — só quem está na vez é avisado (push da roleta), para duas pessoas não
+ * ligarem para o mesmo lead. `mode="broker"`: versão do corretor (/broker/live), só leitura,
+ * sem o botão de lead fictício.
  */
 export function LiveView({ mode = "owner" }: { mode?: "owner" | "broker" }) {
   const isBroker = mode === "broker";
@@ -218,18 +218,6 @@ export function LiveView({ mode = "owner" }: { mode?: "owner" | "broker" }) {
     };
     syncOffset();
   }, [data?.serverNow]);
-
-  const activeLeads = data?.activeLeads ?? [];
-  useNewItemAlert(
-    activeLeads.map((l) => l.id),
-    {
-      enabled: !isBroker,
-      notify: (newIds) => {
-        const first = activeLeads.find((l) => newIds.includes(l.id));
-        if (first) showLeadNotification("Novo lead recebido", `${first.name} entrou na roleta de atendimento.`);
-      },
-    }
-  );
 
   return (
     <div className="px-4 py-8 sm:px-8">

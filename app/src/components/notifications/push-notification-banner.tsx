@@ -62,7 +62,7 @@ export function PushNotificationBanner() {
     <div className="mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-[color:var(--color-border-strong)] bg-accent-soft px-4 py-3">
       <div className="flex items-center gap-2 text-sm text-accent">
         <Bell size={16} />
-        Ative as notificações para ser avisado assim que um novo lead chegar — mesmo com o CRM fechado.
+        Ative as notificações para ser avisado quando um lead cair na sua vez — mesmo com o CRM fechado.
       </div>
       <div className="flex items-center gap-2">
         <button

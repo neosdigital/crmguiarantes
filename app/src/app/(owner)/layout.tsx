@@ -7,6 +7,7 @@ import { Sidebar } from "@/components/layout/sidebar";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { SignOutButton } from "@/components/layout/sign-out-button";
 import { NotificationHealthBanner } from "@/components/notifications/notification-health-banner";
+import { BrokerAlertListener } from "@/components/notifications/broker-alert-listener";
 
 const ICON_SIZE = 18;
 
@@ -47,6 +48,8 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
         <NotificationHealthBanner />
         {children}
       </main>
+      {/* Na roleta: toca o alarme do aviso da própria vez também nas telas do painel admin */}
+      {isInRotation && <BrokerAlertListener />}
     </div>
   );
 }

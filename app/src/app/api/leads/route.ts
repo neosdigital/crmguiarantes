@@ -4,7 +4,7 @@ import { requireSession, jsonError, ApiError } from "@/lib/api";
 import { scopedDb } from "@/lib/tenant-db";
 import { AuditAction, prisma, distributeNewLead, assignLeadManually } from "@crm/db";
 import type { Prisma } from "@crm/db";
-import { notifyNewLead, notifyLeadAssignedToBroker } from "@/lib/push-server";
+import { notifyLeadAssignedToBroker } from "@/lib/push-server";
 import { runAfterResponse } from "@/lib/run-after-response";
 
 const listQuerySchema = z.object({
@@ -130,16 +130,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ lead: assigned, assignment: null }, { status: 201 });
     }
 
+    // Sem aviso geral de lead novo: só o corretor da vez é notificado (dentro da roleta).
     const assignment = await distributeNewLead(session.user.organizationId, lead.id);
-
-    runAfterResponse(() =>
-      notifyNewLead({
-        id: lead.id,
-        organizationId: session.user.organizationId,
-        name: lead.name,
-        source: lead.source,
-      }).catch((error) => console.error("[push] falha ao notificar novo lead (manual)", error))
-    );
 
     return NextResponse.json(
       {

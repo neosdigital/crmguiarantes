@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 import { prisma, AuditAction, distributeNewLead, decryptSecret } from "@crm/db";
-import { notifyNewLead } from "@/lib/push-server";
-import { runAfterResponse } from "@/lib/run-after-response";
 import {
   verifyMetaSignature,
   fetchLeadDetails,
@@ -278,15 +276,7 @@ async function processLeadgenEvent(value: {
 
   log("lead_created", { leadId: lead.id, organizationId: integration.organizationId });
 
+  // Sem aviso geral de lead novo: só o corretor da vez é notificado (dentro da roleta).
   const assignment = await distributeNewLead(integration.organizationId, lead.id);
   log("lead_distributed", { leadId: lead.id, assigned: Boolean(assignment) });
-
-  runAfterResponse(() =>
-    notifyNewLead({
-      id: lead.id,
-      organizationId: integration.organizationId,
-      name: lead.name,
-      source: lead.source,
-    }).catch((error) => log("push_notify_error", { leadId: lead.id, error: String(error) }))
-  );
 }

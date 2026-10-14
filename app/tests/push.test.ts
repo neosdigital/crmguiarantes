@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { prisma, Role, distributeNewLead, expireAndRotate, returnLeadToRotation, getNotificationHealth } from "@crm/db";
 import { createTestOrg, createTestLead, cleanupTestOrg } from "./helpers";
-import { notifyNewLead, sendTestPush } from "../src/lib/push-server";
+import { sendTestPush } from "../src/lib/push-server";
 import webpush, { WebPushError } from "web-push";
 
 // Mock auto-contido do "web-push" — não depende da forma exata de interop do pacote real,
@@ -27,7 +27,7 @@ vi.mock("web-push", () => {
 const sendNotificationMock = vi.mocked(webpush.sendNotification);
 const FAKE_SEND_RESULT = { statusCode: 201, body: "", headers: {} };
 
-// Relógio fixo em horário comercial (15h em Brasília) — notifyNewLead não envia nada no
+// Relógio fixo em horário comercial (15h em Brasília) — o aviso da vez não é enviado no
 // horário de silêncio (23h–07h), então sem isso os testes falhariam se rodados à noite.
 // setVapidDetails é mock, então qualquer valor serve — só precisa existir pro push não se
 // considerar "desativado" (ensureConfigured em packages/db/src/push.ts).
@@ -101,59 +101,34 @@ function sentPushes() {
   }));
 }
 
-describe("Web Push — notifyNewLead", () => {
-  it("notifica só o dono/admin — corretor não recebe o aviso geral de lead novo", async () => {
+describe("Web Push — lead novo: sem aviso geral", () => {
+  it("ninguém recebe aviso geral — só quem está na vez (admin ou corretor) é notificado", async () => {
     sendNotificationMock.mockResolvedValue(FAKE_SEND_RESULT);
 
-    const { org, brokers } = await createTestOrg({ brokerCount: 1 });
+    // Dois admins na roleta (usuários OWNER/ADMIN com perfil de corretor), um corretor comum
+    // e um dono fora da roleta — todos com aparelho inscrito.
+    const { org, brokers } = await createTestOrg({ brokerCount: 3, responseTimeoutMinutes: 5 });
     cleanupIds.push(org.id);
-    const owner = await createOwner(org.id, org.id);
-    const brokerUser = await brokerUserOf(brokers[0].id);
+    const users = await Promise.all(brokers.map((b) => brokerUserOf(b.id)));
+    await prisma.user.update({ where: { id: users[0].id }, data: { role: Role.OWNER } });
+    await prisma.user.update({ where: { id: users[1].id }, data: { role: Role.ADMIN } });
+    for (const u of users) await subscribe(org.id, u.id, `device-${u.id}`);
+    const outsideOwner = await createOwner(org.id, org.id);
+    await subscribe(org.id, outsideOwner.id, "owner-fora-da-roleta");
 
-    await subscribe(org.id, owner.id, "owner-device");
-    await subscribe(org.id, brokerUser.id, "broker-device");
+    const lead = await createTestLead(org.id, "Carla Souza");
+    await distributeNewLead(org.id, lead.id);
 
-    await notifyNewLead({ id: "lead_1", organizationId: org.id, name: "Carla Souza", source: "meta_ads" });
-
-    expect(sendNotificationMock).toHaveBeenCalledTimes(1);
-    const [subscription, payloadJson] = sendNotificationMock.mock.calls[0];
-    expect(subscription.endpoint).toBe("https://push.example.com/owner-device");
-    const payload = JSON.parse(String(payloadJson));
-    expect(payload.url).toBe("/leads/lead_1");
-    expect(payload.title).toBe("Novo lead!");
-    expect(payload.body).toBe("Carla Souza - via Meta Ads");
+    expect(sentPushes()).toEqual([
+      expect.objectContaining({
+        endpoint: `https://push.example.com/device-${users[0].id}`,
+        payload: expect.objectContaining({ title: "Novo lead na sua vez!" }),
+      }),
+    ]);
   });
+});
 
-  it("não notifica corretor pausado", async () => {
-    sendNotificationMock.mockResolvedValue(FAKE_SEND_RESULT);
-
-    const { org, brokers } = await createTestOrg({ brokerCount: 1 });
-    cleanupIds.push(org.id);
-    await prisma.broker.update({ where: { id: brokers[0].id }, data: { status: "PAUSED" } });
-    const brokerUser = await prisma.broker
-      .findUniqueOrThrow({ where: { id: brokers[0].id } })
-      .then((b) => prisma.user.findUniqueOrThrow({ where: { id: b.userId } }));
-    await subscribe(org.id, brokerUser.id, "paused-broker-device");
-
-    await notifyNewLead({ id: "lead_2", organizationId: org.id, name: "Lead X", source: "manual" });
-
-    expect(sendNotificationMock).not.toHaveBeenCalled();
-  });
-
-  it("não envia nada no horário de silêncio (23h–07h em Brasília)", async () => {
-    sendNotificationMock.mockResolvedValue(FAKE_SEND_RESULT);
-    vi.setSystemTime(tomorrowAtUtc(3, 30)); // 00h30 em Brasília
-
-    const { org } = await createTestOrg({ brokerCount: 0 });
-    cleanupIds.push(org.id);
-    const owner = await createOwner(org.id, org.id);
-    await subscribe(org.id, owner.id, "night-device");
-
-    await notifyNewLead({ id: "lead_night", organizationId: org.id, name: "Lead Noturno", source: "manual" });
-
-    expect(sendNotificationMock).not.toHaveBeenCalled();
-  });
-
+describe("Web Push — envio e inscrições", () => {
   it("remove a inscrição do banco quando o envio falha com 410 (Gone)", async () => {
     const { org } = await createTestOrg({ brokerCount: 0 });
     cleanupIds.push(org.id);
@@ -162,7 +137,7 @@ describe("Web Push — notifyNewLead", () => {
 
     sendNotificationMock.mockRejectedValue(new WebPushError("Gone", 410, {}, "", ""));
 
-    await notifyNewLead({ id: "lead_3", organizationId: org.id, name: "Lead Y", source: "manual" });
+    await sendTestPush(owner.id);
 
     const stillExists = await prisma.pushSubscription.findUnique({ where: { id: sub.id } });
     expect(stillExists).toBeNull();
@@ -176,24 +151,11 @@ describe("Web Push — notifyNewLead", () => {
 
     sendNotificationMock.mockRejectedValue(new Error("network timeout"));
 
-    await notifyNewLead({ id: "lead_4", organizationId: org.id, name: "Lead Z", source: "manual" });
+    await sendTestPush(owner.id);
 
     const updated = await prisma.pushSubscription.findUnique({ where: { id: sub.id } });
     expect(updated).not.toBeNull();
     expect(updated?.lastError).toBe("network timeout");
-  });
-
-  it("nunca lança mesmo se tudo falhar", async () => {
-    const { org } = await createTestOrg({ brokerCount: 0 });
-    cleanupIds.push(org.id);
-    const owner = await createOwner(org.id, org.id);
-    await subscribe(org.id, owner.id, "boom-device");
-
-    sendNotificationMock.mockRejectedValue(new Error("boom"));
-
-    await expect(
-      notifyNewLead({ id: "lead_5", organizationId: org.id, name: "Lead W", source: "manual" })
-    ).resolves.toBeUndefined();
   });
 
   it("sendTestPush manda só pro próprio usuário e retorna a contagem", async () => {

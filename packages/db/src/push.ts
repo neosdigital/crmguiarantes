@@ -39,17 +39,6 @@ function ensureConfigured(): boolean {
   return true;
 }
 
-function sourceLabel(source: string): string {
-  switch (source) {
-    case "meta_ads":
-      return "via Meta Ads";
-    case "manual":
-      return "via cadastro manual";
-    default:
-      return `via ${source}`;
-  }
-}
-
 type PushPayload = {
   title: string;
   body: string;
@@ -139,51 +128,6 @@ async function sendToBroker(brokerId: string, payload: PushPayload, options: Sen
     return { outcome: "all_failed", devices: subs.length, delivered: 0, errors: results.map((r) => r.error ?? "?") };
   }
   return { outcome: "sent", devices: subs.length, delivered };
-}
-
-/**
- * Notifica os DONOS/ADMINS da organização sobre um lead novo. Corretores NÃO recebem este
- * aviso: cada corretor só é notificado quando o lead cai na vez dele (notifyBrokerTurnPush),
- * para nenhum corretor receber aviso de lead que está na vez de outro.
- * Nunca lança. No horário de silêncio (23h–07h) não envia nada.
- */
-export async function notifyNewLead(lead: {
-  id: string;
-  organizationId: string;
-  name: string;
-  source: string;
-}): Promise<void> {
-  if (isQuietHours()) {
-    console.info("[push] horário de silêncio — notificação não enviada", { leadId: lead.id });
-    return;
-  }
-  if (!ensureConfigured()) return;
-
-  try {
-    const users = await prisma.user.findMany({
-      where: {
-        organizationId: lead.organizationId,
-        status: "ACTIVE",
-        role: { in: ["OWNER", "ADMIN"] },
-      },
-      include: { pushSubscriptions: true },
-    });
-
-    const payload: PushPayload = {
-      title: "Novo lead!",
-      body: `${lead.name} - ${sourceLabel(lead.source)}`,
-      url: `/leads/${lead.id}`,
-      icon: "/icon-192.png",
-      badge: "/icon-192.png",
-      tag: `lead-${lead.id}`,
-    };
-
-    await Promise.allSettled(
-      users.flatMap((user) => user.pushSubscriptions.map((sub) => sendToSubscription(sub, payload)))
-    );
-  } catch (error) {
-    console.error("[push] falha ao notificar novo lead", { leadId: lead.id, error: String(error) });
-  }
 }
 
 /**
